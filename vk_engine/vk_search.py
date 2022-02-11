@@ -16,7 +16,6 @@ def get_comments_post(fresh_posts_id, posts, group_name):
     print("GET COMMENTS POST")
     posts_id = []
     for comment in fresh_posts_id:
-        print("ПРОВЕРКА", comment)
         url = f"https://api.vk.com/method/wall.getComments?domain={comment}&count=10&access_token={token}&v=5.131"
         req = requests.get(url)
         src = req.json()
@@ -49,12 +48,11 @@ def get_comments_post(fresh_posts_id, posts, group_name):
             print("Файл с ID комментарием найден, начинаем выборку комментариев")
 
 
-
 def get_wall_posts(group_name):
     url = f"https://api.vk.com/method/wall.get?domain={group_name}&count=10&access_token={token}&v=5.131"
     req = requests.get(url)
     src = req.json()
-
+    groups = "groups"
     #проверяем существует ли директория с именем группы
     if os.path.exists(f"{group_name}"):
         print(f"Директория с именем {group_name} уже существует!")
@@ -83,7 +81,7 @@ def get_wall_posts(group_name):
         print("Файл с ID постов найден, начинаем выборку постов")
 
     print(fresh_posts_id)
-    get_comments_post(fresh_posts_id, posts, group_name)
+    #get_comments_post(fresh_posts_id, posts, group_name)
 
     #ИЗВЛЕКАЕМ ДАННЫЕ ИЗ ПОСТОВ
     #count_comments = Counter(posts["comments"])
