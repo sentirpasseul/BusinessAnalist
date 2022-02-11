@@ -38,7 +38,7 @@ print(filtered_tokens)
 print()
 
 i = 0
-
+print("Текст строками: ")
 while i <= len(filtered_tokens):
         print(" ".join(filtered_tokens[i:i+20]), end="\n")
         i += 20
