@@ -1,10 +1,9 @@
 import re
-from input_search import f
+from engine.preprocessing.input_search import f
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
-
-print("1. Считывание текста: ")
+print("1. Вывод текста: ")
 print()
 print(f)
 print()
@@ -39,7 +38,14 @@ print()
 
 i = 0
 print("Текст строками: ")
+filtered_tokens_list = []
 while i <= len(filtered_tokens):
+        filtered_tokens_list.append(filtered_tokens[i])
         print(" ".join(filtered_tokens[i:i+20]), end="\n")
         i += 20
-print()
+print(filtered_tokens_list)
+
+filtered_tokens_file = open(r'filtered_tokens.txt', 'w')
+for i in range(len(filtered_tokens_list)):
+    filtered_tokens_file.write("\n".join(filtered_tokens_list[i:i+20]))
+
