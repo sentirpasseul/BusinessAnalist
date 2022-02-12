@@ -21,5 +21,5 @@ counts(f)
 
 #СЧЁТЧИК ВСЕХ СЛОВ В ТЕКСТЕ
 len_text = len(list_file)
-print(len_text)
+print("\nСчётчик всех слов в тексте:", len_text, sep="\n")
 
