@@ -1,4 +1,4 @@
-from vk_engine.vk_search import url
+from search.vk_engine.vk_search import url
 
 
 if __name__ == '__main__':

@@ -3,9 +3,10 @@ import os.path
 
 import requests
 from auth_data import token
+from search.input_search import input_search
 from collections import Counter
 
-input_search = input("Введите название бизнеса:")
+
 group_name = input_search
 
 url = f"https://api.vk.com/method/wall.get?domain={group_name}&count=10&access_token={token}&v=5.131"
