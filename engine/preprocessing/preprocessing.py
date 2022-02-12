@@ -1,5 +1,5 @@
 import re
-from engine.preprocessing.input_search import f
+from engine.preprocessing.input_text import f
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
