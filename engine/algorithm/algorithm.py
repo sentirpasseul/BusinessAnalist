@@ -19,3 +19,7 @@ def counts(f):
 counts(f)
 """
 
+#СЧЁТЧИК ВСЕХ СЛОВ В ТЕКСТЕ
+len_text = len(list_file)
+print(len_text)
+
