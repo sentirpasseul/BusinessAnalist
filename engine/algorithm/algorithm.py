@@ -19,7 +19,7 @@ print(relist)
 list_file = f.split()
 print("Текст добавлен в список: ",list_file, sep="\n")
 
-#TODO СЧЁТЧИК ЗАГЛАВНЫХ БУКВ
+#TODO сделать всё по функциям
 """"
 def counts(f):
     count_uppercase = f.count(f.ascii_uppercase)
@@ -53,7 +53,14 @@ for word_i in range(len(f)):
 
 #ПЕРЕМЕННАЯ Х1 - КОЛИЧЕСТВО ЗАГЛАВНЫХ БУКВ
 count_uppercase = sum(map(str.isupper, f))
-print("Количество слов в верхнем регистре (переменная х1): ", count_uppercase)
+print("\nКоличество слов в верхнем регистре (переменная х1): ", count_uppercase)
+#Вычисление эталона
+x1 = (count_uppercase/len_text)
+print(f"Переменная x1 = {round(x1, 4)}")
 
-#ПЕРЕМЕННАЯ Х2 - КОЛИ
+#ПЕРЕМЕННАЯ Х2 - КОЛИЧЕСТВО СОЮЗОВ
+#count_unions = sum()
+
+
+print("\nКоличество союзов в тексте")
 
