@@ -48,19 +48,22 @@ for word in sub1_reset:
 symbols_text = []
 for word_i in range(len(f)):
     symbols_text.append(f[word_i])
+len_symb_text = len(symbols_text)
 
 #print(" ".join(symbols_text))
 
 #ПЕРЕМЕННАЯ Х1 - КОЛИЧЕСТВО ЗАГЛАВНЫХ БУКВ
 count_uppercase = sum(map(str.isupper, f))
-print("\nКоличество слов в верхнем регистре (переменная х1): ", count_uppercase)
-#Вычисление эталона
-x1 = (count_uppercase/len_text)
+#Вычисление эталона заглавных букв
+x1 = (count_uppercase/len_symb_text)
 print(f"Переменная x1 = {round(x1, 4)}")
 
 #ПЕРЕМЕННАЯ Х2 - КОЛИЧЕСТВО СОЮЗОВ
-#count_unions = sum()
+count_unions = list_parts.count("СОЮЗ")
+#Вычисление эталона союзов
+x2 = (count_unions/len_text)
+print(f"Переменная х2 = {round(x2, 4)}")
 
 
-print("\nКоличество союзов в тексте")
-
+print("\nКоличество букв в верхнем регистре (переменная х1): ", count_uppercase)
+print("Количество союзов в тексте", count_unions)
