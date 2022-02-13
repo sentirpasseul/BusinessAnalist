@@ -23,7 +23,7 @@ print("4. Удаление знаков препинания: ")
 sub1 = re.sub(r'[^\w\s]',' ', space)
 print(sub1)
 
-
+"""
 ru_stopwords = stopwords.words('russian')
 tokens = word_tokenize(sub1, language='russian')
 filtered_tokens = []
@@ -35,13 +35,13 @@ for token in tokens:
 print("5. Удаление стоп-слов:")
 print(filtered_tokens)
 print()
-
+"""
 i = 0
 print("Текст строками: ")
 filtered_tokens_list = []
-while i <= len(filtered_tokens):
-        filtered_tokens_list.append(filtered_tokens[i])
-        print(" ".join(filtered_tokens[i:i+20]), end="\n")
+while i <= len(sub1):
+        filtered_tokens_list.append(sub1[i])
+        print(" ".join(sub1[i:i+20]), end="\n")
         i += 20
 print(filtered_tokens_list)
 
