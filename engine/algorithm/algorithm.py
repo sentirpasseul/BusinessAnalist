@@ -65,5 +65,7 @@ x2 = (count_unions/len_text)
 print(f"Переменная х2 = {round(x2, 4)}")
 
 
+#ПЕРЕМЕННАЯ Х3 - КОЛИЧЕСТВО
+
 print("\nКоличество букв в верхнем регистре (переменная х1): ", count_uppercase)
 print("Количество союзов в тексте", count_unions)
