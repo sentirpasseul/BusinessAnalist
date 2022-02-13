@@ -2,6 +2,11 @@ import re
 import string
 import nltk
 from nltk.tokenize import word_tokenize
+from engine.preprocessing.preprocessing import sub1
+import pymorphy2
+morph = pymorphy2.MorphAnalyzer()
+
+
 nltk.download("")
 
 file = open(f'tests/100_sarc.txt', 'r', encoding='utf-8')
@@ -26,18 +31,29 @@ counts(f)
 len_text = len(list_file)
 print("\nСчётчик всех слов в тексте:", len_text, sep="\n")
 
-#ТОКЕНИЗАЦИЯ И РАЗБИВКА НА СИМВОЛЫ
+#ТОКЕНИЗАЦИЯ
 tokens = word_tokenize(" ".join(list_file))
 print("ТОКЕНЫ: ", tokens)
 
+#ОПРЕДЕЛЕНИЕ ЧАСТЕЙ РЕЧИ
+list_parts = []
+sub1_reset = word_tokenize(sub1)
+for word in sub1_reset:
+    parse_parts = morph.parse(word)[0]
+    part = parse_parts.tag.cyr_repr
+    list_parts.append(part)
+    print(f"Для слова '{word}' частью речи является '{part}'")
+
+#РАЗБИВКА ПО СИМВОЛАМ
 symbols_text = []
 for word_i in range(len(f)):
     symbols_text.append(f[word_i])
 
-print(" ".join(symbols_text))
+#print(" ".join(symbols_text))
+
 #ПЕРЕМЕННАЯ Х1 - КОЛИЧЕСТВО ЗАГЛАВНЫХ БУКВ
 count_uppercase = sum(map(str.isupper, f))
-print("Количество слов в верхнем регистре (х1): ", count_uppercase)
+print("Количество слов в верхнем регистре (переменная х1): ", count_uppercase)
 
-#
+#ПЕРЕМЕННАЯ Х2 - КОЛИ
 
