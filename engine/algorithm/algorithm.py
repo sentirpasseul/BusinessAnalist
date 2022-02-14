@@ -65,7 +65,12 @@ x2 = (count_unions/len_text)
 print(f"Переменная х2 = {round(x2, 4)}")
 
 
-#ПЕРЕМЕННАЯ Х3 - КОЛИЧЕСТВО
+#ПЕРЕМЕННАЯ Х3 - КОЛИЧЕСТВО ЧАСТИЦ
+count_particle = list_parts.count("ЧАСТ")
+#Вычисление эталона частиц
+x3 = count_particle/len_text
+print(f"Переменная х3 = {round(x3, 4)}")
 
 print("\nКоличество букв в верхнем регистре (переменная х1): ", count_uppercase)
-print("Количество союзов в тексте", count_unions)
+print("Количество союзов в тексте:", count_unions)
+print("Количество частиц в тексте:", count_particle)
