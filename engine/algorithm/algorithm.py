@@ -82,8 +82,15 @@ count_gain_punct = f.count("!") + f.count("?")
 x4 = (count_gain_punct/len_sent)/10
 print(f"Переменная х4 = {round(x4, 4)}")
 
+#ПЕРЕМЕННАЯ Х5 - КОЛИЧЕСТВО МЕЖДОМЕТИЙ
+count_interj = list_parts.count("МЕЖД")
+#Вычисление эталона междометий
+x5 = count_interj/len_text
+print(f"Переменная х5 = {round(x5, 4)}")
+
 
 print("\nКоличество букв в верхнем регистре (переменная х1): ", count_uppercase)
 print("Количество союзов в тексте:", count_unions)
 print("Количество частиц в тексте:", count_particle)
 print("Количество усиливающих знаков препинания в тексте:", count_gain_punct)
+print("Количество междометий в тексте:", count_interj)
