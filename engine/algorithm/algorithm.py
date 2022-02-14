@@ -50,6 +50,10 @@ for word_i in range(len(f)):
     symbols_text.append(f[word_i])
 len_symb_text = len(symbols_text)
 
+#РАЗБИВКА ПО ПРЕДЛОЖЕНИЯМ
+sent1 = re.compile(r'[.|!|?|…]').split(f)
+list_sent = list(filter(None, sent1))
+
 #print(" ".join(symbols_text))
 
 #ПЕРЕМЕННАЯ Х1 - КОЛИЧЕСТВО ЗАГЛАВНЫХ БУКВ
@@ -70,6 +74,10 @@ count_particle = list_parts.count("ЧАСТ")
 #Вычисление эталона частиц
 x3 = count_particle/len_text
 print(f"Переменная х3 = {round(x3, 4)}")
+
+#ПЕРЕМЕННАЯ Х4 - КОЛИЧЕСТВО УСИЛИВАЮЩИХ ЗНАКОВ ПРЕПИНАНИЯ
+count_gain_punct = list_parts.count("!") + list_parts.count("?")
+#Вычисление эталона усиливающих знаков препинания
 
 print("\nКоличество букв в верхнем регистре (переменная х1): ", count_uppercase)
 print("Количество союзов в тексте:", count_unions)
