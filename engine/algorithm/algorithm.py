@@ -88,9 +88,20 @@ count_interj = list_parts.count("МЕЖД")
 x5 = count_interj/len_text
 print(f"Переменная х5 = {round(x5, 4)}")
 
+def display_counts(count_uppercase, count_unions,
+                   count_particle, count_gain_punct,
+                    count_interj
+                   ):
+    print("\nКоличество букв в верхнем регистре (переменная х1): ", count_uppercase)
+    print("Количество союзов в тексте:", count_unions)
+    print("Количество частиц в тексте:", count_particle)
+    print("Количество усиливающих знаков препинания в тексте:", count_gain_punct)
+    print("Количество междометий в тексте:", count_interj)
 
-print("\nКоличество букв в верхнем регистре (переменная х1): ", count_uppercase)
-print("Количество союзов в тексте:", count_unions)
-print("Количество частиц в тексте:", count_particle)
-print("Количество усиливающих знаков препинания в тексте:", count_gain_punct)
-print("Количество междометий в тексте:", count_interj)
+""""
+standard_100 = open(f'/standards/standard_100', 'w')
+with open(f'/standards/standard_100', 'w'):
+    display_counts(count_uppercase, count_unions,
+                   count_particle, count_gain_punct,
+                    count_interj)
+"""
