@@ -1,22 +1,19 @@
 import googlesearch
 import urllib
-
+import sys, webbrowser
 import requests
 from googlesearch import search
 from search.input_search import input_search
+from requests_html import HTML
+from requests_html import HTMLSession
 from bs4 import BeautifulSoup
+import time
 
-query = f"{input_search}"
-query = query.replace(' ', '+')
-url = "https://google.com/search?q="
-
-req = requests.get(url+query)
-h3 = req.find_all("h3",class_="r")
-for elem in h3:
-    elem=elem.contents[0]
-    link=("https://www.google.com" + elem["href"])
-    print(link)
-
+url = f'https://www.google.ru/search?q={input_search}'
+req = requests.get(url, headers={'User-agent': 'your bot 0.1'})
+"""
+url = f"https://www.google.ru/search?q={input_search}"
+get_source(url)
 
 #filtered = []
 #for item in search(input_search, tld='co.in', num=10, stop=10, pause=2, lang='ru'):
@@ -27,3 +24,4 @@ for elem in h3:
 #for item in filtered:
  #   filt1 = "" .join(filtered[item])
   #  print(filt1)
+  """

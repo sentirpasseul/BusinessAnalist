@@ -5,13 +5,21 @@ import requests
 from auth_data import token
 from search.input_search import input_search
 from collections import Counter
-
+import vk_api as vk
 
 group_name = input_search
 
-url = f"https://api.vk.com/method/wall.get?domain={group_name}&count=10&access_token={token}&v=5.131"
+#url = f"https://api.vk.com/method/wall.get?domain={group_name}&count=10&access_token={token}&v=5.131"
+url = f'https://api.vk.com/method/groups.search?q={group_name}&type=group&count=10&v=5.131'
 req = requests.get(url)
-print(req.text)
+print(req.content)
+
+
+def search_groups(group_name):
+    url = f"https://api.vk.com/method/groups.search?q={group_name}&v=5.131"
+    req = requests.get(url)
+    print(req.text)
+
 
 def get_comments_post(fresh_posts_id, posts, group_name):
     print("GET COMMENTS POST")
@@ -98,10 +106,12 @@ def get_wall_posts(group_name):
 
 
 
-def main():
-    group_name = input_search
-    get_wall_posts(group_name)
+#def main():
+    #group_name = input_search
+    #get_wall_posts(group_name)
+    #search_groups(group_name)
 
 
-if __name__ == '__main__':
-    main()
+
+#if __name__ == '__main__':
+ #   main()
