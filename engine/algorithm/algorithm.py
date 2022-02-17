@@ -4,6 +4,8 @@ import nltk
 from nltk.tokenize import word_tokenize
 from engine.preprocessing.preprocessing import sub1
 import pymorphy2
+import asyncio
+import time
 morph = pymorphy2.MorphAnalyzer()
 
 
