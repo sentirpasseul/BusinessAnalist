@@ -3,25 +3,19 @@ from engine.preprocessing.input_text import f
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
+def preprocess(text):
+    text = text.lower().replace("ё", "е")
+    text = re.sub('((www\.[^\s]+)|(https?://[^\s]+))', 'URL', text)
+    text = re.sub('@[^\s]+', 'USER', text)
+    text = re.sub('[^a-zA-Zа-яА-Я1-9]+', ' ', text)
+    text = re.sub(' +', ' ', text)
+    return text.strip()
+preprocess(f)
 print("1. Вывод текста: ")
 print()
 print(f)
 print()
 
-f_lower = f.lower()
-print("2. Данные в нижнем регистре:")
-print(f_lower)
-print()
-
-space = re.sub(r'\s+', ' ', f_lower)
-print("3. Удаление лишних пробелов:")
-print(space)
-
-
-
-print("4. Удаление знаков препинания: ")
-sub1 = re.sub(r'[^\w\s]',' ', space)
-print(sub1)
 
 """
 ru_stopwords = stopwords.words('russian')
