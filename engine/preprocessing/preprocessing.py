@@ -33,9 +33,9 @@ print()
 i = 0
 print("Текст строками: ")
 filtered_tokens_list = []
-while i <= len(sub1):
-        filtered_tokens_list.append(sub1[i])
-        print(" ".join(sub1[i:i+20]), end="\n")
+while i <= len(f):
+        filtered_tokens_list.append(f[i])
+        print(" ".join(f[i:i+20]), end="\n")
         i += 20
 print(filtered_tokens_list)
 
