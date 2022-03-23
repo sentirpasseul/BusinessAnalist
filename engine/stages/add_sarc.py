@@ -1,3 +1,13 @@
+from nltk.tokenize import word_tokenize
+
+def preproc():
+    file = open('data.txt', 'r', encoding="utf-8")
+    text = file.read()
+    split_text = text.split(f"{str.isdigit}")
+    tok = word_tokenize(" ".join(split_text), "russian")
+    print(tok)
+    #print(" ".join(split_text))
+
 t = "СТОП"
 text = ""
 while t != text:
@@ -7,4 +17,4 @@ while t != text:
             if text != "СТОП":
                 file_sarc.write(text + '\n')
             else:
-                break
+                preproc()
