@@ -50,7 +50,7 @@ async def counters(len_symb_text, list_parts, len_text, f, len_sent, timer):
         await asyncio.sleep(3)
         display_counts(count_uppercase,count_unions, count_particle, count_gain_punct, count_interj, timer )
 
-async def preprocess(list_file, f, timer):
+def preprocess(list_file):
     #СЧЁТЧИК ВСЕХ СЛОВ В ТЕКСТЕ
     len_text = len(list_file)
     print("\nСчётчик всех слов в тексте:", len_text, sep="\n")
@@ -68,6 +68,7 @@ async def preprocess(list_file, f, timer):
         list_parts.append(part)
         print(f"Для слова '{word}' частью речи является '{part}'")
 
+    """
     #РАЗБИВКА ПО СИМВОЛАМ
     symbols_text = []
     for word_i in range(len(f)):
@@ -88,22 +89,21 @@ async def read_file():
     f = " ".join(file.read().splitlines())
     print("\nПервоначальный текст: ", f, "\n", sep="\n")
     """
-    relist = re.sub("", f)
-    print(relist)
+    #relist = re.sub("", f)
+    #print(relist)
     """
     list_file = f.split()
     print("Текст добавлен в список: ",list_file, sep="\n")
 
     #TODO сделать всё по функциям
-    """"
+    """"""
     def counts(f):
         count_uppercase = f.count(f.ascii_uppercase)
         print(count_uppercase)
     counts(f)
     """
-    await preprocess(list_file, f, timer)
 
-
+    """"""
 
 
 """"
@@ -113,7 +113,4 @@ with open(f'/standards/standard_100', 'w'):
                    count_particle, count_gain_punct,
                     count_interj)
 """
-def main():
-    asyncio.run(read_file())
-if __name__ == '__main__':
-    main()
+
