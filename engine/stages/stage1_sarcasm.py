@@ -1,15 +1,13 @@
-import random
 import re
+import string
+
 split_regex = re.compile(r'[|!|?|…]')
 from dostoevsky.tokenization import RegexTokenizer
-from dostoevsky.models import FastTextSocialNetworkModel, FastTextToxicModel
-from engine.algorithm.algorithm import preprocess
+from dostoevsky.models import FastTextSocialNetworkModel
+from nltk.tokenize import word_tokenize
 import fasttext
-import pandas as pd
-import numpy as np
-import sklearn
 import pymorphy2
-morph = pymorphy2.MorphAnalyzer
+morph = pymorphy2.MorphAnalyzer()
 
 fasttext.FastText.eprint = lambda x: None
 FastTextSocialNetworkModel.MODEL_PATH = 'fasttext-social-network-model.bin'
@@ -44,15 +42,6 @@ def fifteen():
 
     return ar_15
 
-def morph_analyzer():
-    text = fifteen()
-    preproces = preprocess(text)
-    print(preproces)
-
-
-
-
-# @classmethod
 def ton():
     ar_15 = fifteen()
 
@@ -78,53 +67,72 @@ def ton():
         """
         return neu, p, neg
 
+
+def preprocess_text(text1):
+    text1 = " ".join(text1).lower().replace("ё", "е")
+    text1 = re.sub('((www\.[^\s]+)|(https?://[^\s]+))', 'URL', text1)
+    text1 = re.sub('@[^\s]+', 'USER', text1)
+    text1 = re.sub('[^a-zA-Zа-яА-Я1-9]+', ' ', text1)
+    text1 = re.sub(' +', ' ', text1)
+    text1 = re.sub('([0-9])', "\n", text1)
+    return text1.strip()
+
+def preprocess(text):
+
+    ###РАЗДЕЛЕНИЕ ТЕКСТА НА ПРЕДЛОЖЕНИЯ
+    #Удаление ненужных символов
+    del_sym = preprocess_text(text).split("\n")
+    print(del_sym)
+    ##########################################
+
+    #Каждое предложение прогоняем по MorphAnalyzer
+    for sentence in del_sym:
+        #Сплитим предложение на слова
+        sent1 = sentence.split(" ")
+        list_parts = []
+        #Разбиваем спличенный текст на токены
+        sub1_reset = word_tokenize(" ".join(sent1))
+        if sub1_reset != " " and sub1_reset !="":
+            print(sub1_reset)
+
+        #Анализируем каждое слово в предложении
+        for word in sent1:
+            if word != "":
+                parse_parts = morph.parse(word)[0]
+                part = parse_parts.tag.cyr_repr
+                list_parts.append(part)
+                print(f"Для слова '{word}' частью речи является '{part}'")
+
+    #СЧЁТЧИК ВСЕХ СЛОВ В ТЕКСТЕ
+        len_text = len(sub1_reset)
+        print("\nСчётчик всех слов в тексте:", len_text, sep="\n")
+
+        #ТОКЕНИЗАЦИЯ
+        #tokens = word_tokenize(" ".join(sentence))
+        #print("ТОКЕНЫ: ", tokens)
+
+
+    #ОПРЕДЕЛЕНИЕ ЧАСТЕЙ РЕЧИ
+
+
+
+
+
+def morph_analyzer():
+    text = fifteen()
+    preproc = preprocess(text)
+# @classmethod
+
 #@classmethod
 def parts_speech():
     list_text = (text.split('\n'))
     print(list_text)
 
-
-
-    """""
-    for s in list_text:
-        #ПЕРЕМЕННАЯ Х1 - КОЛИЧЕСТВО БУКВ В ВЕРХНЕМ РЕГИСТРЕ
-        count_uppercase = sum(map(str.isupper, s))
-        # ВЫЧИСЛЕНИЕ ЭТАЛОНА БУКВ В ВЕРХНЕМ РЕГИСТРЕ
-        x1 = round(count_uppercase / len(s), 4)
-        print(f"Переменная x1 = {round(x1, 4)}")
-
-        # ПЕРЕМЕННАЯ Х2 - КОЛИЧЕСТВО СОЮЗОВ
-        count_unions = list_text.count("СОЮЗ")
-        # Вычисление эталона союзов
-        x2 = round(count_unions / len_text, 4)
-        print(f"Переменная х2 = {round(x2, 4)}")
-
-        # ПЕРЕМЕННАЯ Х3 - КОЛИЧЕСТВО ЧАСТИЦ
-        count_particle = list_parts.count("ЧАСТ")
-        # Вычисление эталона частиц
-        x3 = round(count_particle / len_text, 4)
-        print(f"Переменная х3 = {round(x3, 4)}")
-
-        # ПЕРЕМЕННАЯ Х4 - КОЛИЧЕСТВО УСИЛИВАЮЩИХ ЗНАКОВ ПРЕПИНАНИЯ
-        count_gain_punct = f.count("!") + f.count("?")
-        # Вычисление эталона усиливающих знаков препинания
-        x4 = round((count_gain_punct / len_sent) / 10, 4)
-        print(f"Переменная х4 = {x4}")
-
-        # ПЕРЕМЕННАЯ Х5 - КОЛИЧЕСТВО МЕЖДОМЕТИЙ
-        count_interj = list_parts.count("МЕЖД")
-        # Вычисление эталона междометий
-        x5 = round(count_interj / len_text, 4)
-        print(f"Переменная х5 = {x5}")
-        display_counts(count_uppercase, count_unions, count_particle, count_gain_punct, count_interj, timer)
-        """
-
-#@classmethod
+    # @classmethod
 def math_model():
-    tonality = ton()
+        tonality = ton()
 
-
-
-#math_model()
-#print(parts_speech())
+# math_model()
+# print(parts_speech())
 morph_analyzer()
+

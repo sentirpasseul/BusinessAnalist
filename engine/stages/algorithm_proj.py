@@ -1,8 +1,8 @@
 import re
 import string
 import nltk
-from nltk.tokenize import word_tokenize
-from engine.preprocessing.preprocessing import sub1
+
+from engine.stages.stage1_sarcasm import text
 import pymorphy2
 import asyncio
 import time
@@ -50,60 +50,6 @@ async def counters(len_symb_text, list_parts, len_text, f, len_sent, timer):
         await asyncio.sleep(3)
         display_counts(count_uppercase,count_unions, count_particle, count_gain_punct, count_interj, timer )
 
-def preprocess(list_file):
-    #СЧЁТЧИК ВСЕХ СЛОВ В ТЕКСТЕ
-    len_text = len(list_file)
-    print("\nСчётчик всех слов в тексте:", len_text, sep="\n")
-
-    #ТОКЕНИЗАЦИЯ
-    tokens = word_tokenize(" ".join(list_file))
-    print("ТОКЕНЫ: ", tokens)
-
-    #ОПРЕДЕЛЕНИЕ ЧАСТЕЙ РЕЧИ
-    list_parts = []
-    sub1_reset = word_tokenize(sub1)
-    for word in sub1_reset:
-        parse_parts = morph.parse(word)[0]
-        part = parse_parts.tag.cyr_repr
-        list_parts.append(part)
-        print(f"Для слова '{word}' частью речи является '{part}'")
-
-    """
-    #РАЗБИВКА ПО СИМВОЛАМ
-    symbols_text = []
-    for word_i in range(len(f)):
-        symbols_text.append(f[word_i])
-    len_symb_text = len(symbols_text)
-
-    #РАЗБИВКА ПО ПРЕДЛОЖЕНИЯМ
-    sent1 = re.compile(r'[.|!|?|…]').split(f)
-    list_sent = list(filter(None, sent1))
-    len_sent = len(list_sent)
-
-    #print(" ".join(symbols_text))
-    await counters(len_symb_text, list_parts, len_text, f, len_sent, timer)
-
-async def read_file():
-    timer = time.time()
-    file = open(f'tests/100_sarc.txt', 'r', encoding='utf-8')
-    f = " ".join(file.read().splitlines())
-    print("\nПервоначальный текст: ", f, "\n", sep="\n")
-    """
-    #relist = re.sub("", f)
-    #print(relist)
-    """
-    list_file = f.split()
-    print("Текст добавлен в список: ",list_file, sep="\n")
-
-    #TODO сделать всё по функциям
-    """"""
-    def counts(f):
-        count_uppercase = f.count(f.ascii_uppercase)
-        print(count_uppercase)
-    counts(f)
-    """
-
-    """"""
 
 
 """"
