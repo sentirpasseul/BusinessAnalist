@@ -94,12 +94,21 @@ def preprocess(text):
                 #Сплитим строку из морф анализа
                 morph_split = "".join(part).split(",")
                 print(morph_split)
+        no = 0
+        vot = 0
+        esli = 0
+        for word in list_parts:
+            if word == "не":
+              no +=1
+            if word == "вот":
+                vot +=1
+            if word == "если":
+                esli +=1
 
         form_xs = list()
         if len_text!=0:
 
             # ПЕРЕМЕННАЯ Х1 - КОЛИЧЕСТВО ЗАГЛАВНЫХ БУКВ
-
             for s in sentence:
                 if s.isupper():
                    sum1 += 1
@@ -137,16 +146,19 @@ def preprocess(text):
             print(f"Переменная х5 (междометия) = {x5}")
             form_xs.append(x5)
 
-            max_x = max(form_xs)
-            min_x = min(form_xs)
+
+
+
+            max_x, max_x_index = max(form_xs), form_xs.index(max(form_xs))+1
+            min_x, min_x_index = min(form_xs), form_xs.index(min(form_xs))+1
             formula = abs(math.sqrt(min_x**2 + max_x**2))
             znachenie_list.append(formula)
 
     print(znachenie_list)
     max_sarc_list = max(znachenie_list)
     min_sarc_list = min(znachenie_list)
-    print("Максимальное значение сарказма:", max_sarc_list)
-    print("Минимальное значение сарказма:", min_sarc_list)
+    print("Максимальное значение сарказма", "(x"+f"{max_x_index}"+"):", max_sarc_list,)
+    print("Минимальное значение сарказма", "(x"+f"{min_x_index}"+"):", min_sarc_list)
     return znachenie_list, max_sarc_list, min_sarc_list
 
         #ТОКЕНИЗАЦИЯ
