@@ -2,13 +2,17 @@ import math
 import re
 import string
 
+import nltk.downloader
+
 split_regex = re.compile(r'[|!|?|…]')
 from dostoevsky.tokenization import RegexTokenizer
 from dostoevsky.models import FastTextSocialNetworkModel
 from nltk.tokenize import word_tokenize
+from nltk.probability import FreqDist
 import fasttext
 import pymorphy2
 morph = pymorphy2.MorphAnalyzer()
+nltk.downloader.Downloader('webtext')
 
 fasttext.FastText.eprint = lambda x: None
 FastTextSocialNetworkModel.MODEL_PATH = 'fasttext-social-network-model.bin'
@@ -100,10 +104,11 @@ def preprocess(text):
         for word in list_parts:
             if word == "не":
               no +=1
-            if word == "вот":
-                vot +=1
-            if word == "если":
-                esli +=1
+            else:
+                if word == "вот":
+                    vot +=1
+                elif word == "если":
+                    esli +=1
 
         form_xs = list()
         if len_text!=0:
@@ -153,6 +158,26 @@ def preprocess(text):
             min_x, min_x_index = min(form_xs), form_xs.index(min(form_xs))+1
             formula = abs(math.sqrt(min_x**2 + max_x**2))
             znachenie_list.append(formula)
+
+            print()
+            print('Количество "Не" в предложенни:', no)
+            print('Количество "Вот" в предложенни:', vot)
+            print('Количество "Если" в предложенни:', esli)
+            print()
+
+        #Часто встречающиеся слова
+        from nltk.corpus import stopwords
+        ru_stopwords = stopwords.words('russian')
+        #tokens = word_tokenize(sentence, language='russian')
+        filtered_tokens = []
+        for token in sub1_reset:
+            if token not in ru_stopwords:
+                filtered_tokens.append(token)
+        fdist = FreqDist(filtered_tokens)
+        print(*fdist.most_common(len(filtered_tokens)), sep='\n')
+
+        #Частота "не" в предложении
+        f_ne = FreqDist(filtered_tokens)
 
     print(znachenie_list)
     max_sarc_list = max(znachenie_list)
