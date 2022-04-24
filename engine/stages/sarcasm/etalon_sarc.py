@@ -60,6 +60,33 @@ def preprocess_text(text1):
     text1 = re.sub('([0-9])', "\n", text1)
     return text1.strip()
 
+def tonality(del_sym):
+    fasttext.FastText.eprint = lambda x: None
+    FastTextSocialNetworkModel.MODEL_PATH = 'fasttext-social-network-model.bin'
+
+    tokenizer = RegexTokenizer()
+    model = FastTextSocialNetworkModel(tokenizer=tokenizer)
+
+    results = model.predict(del_sym, k=4)
+    neu_list = list()
+    neg_list = list()
+    pos_list = list()
+    for sentence, sentiment in zip(del_sym, results):
+        # Анализ Тональности предложения
+        neu = sentiment.get('neutral')
+        neu_list.append(neu)
+        p = sentiment.get('positive')
+        pos_list.append(p)
+        neg = sentiment.get('negative')
+        neg_list.append(neg)
+
+        #print(sentence, '\n',
+         #     'neutral = ', sentiment.get('neutral'), '\n',
+          #    'positive = ', sentiment.get('positive'), '\n'
+           #   'negative = ', sentiment.get('negative'), '\n'
+            #  )
+    return neg_list,neu_list,pos_list
+
 def preprocess(text):
 
     ###РАЗДЕЛЕНИЕ ТЕКСТА НА ПРЕДЛОЖЕНИЯ
@@ -68,10 +95,17 @@ def preprocess(text):
     print(del_sym)
     ##########################################
 
+    neg_list, pos_list, neu_list = tonality(del_sym)
+    counter = 0
 
     znachenie_list = list()
     #Каждое предложение прогоняем по MorphAnalyzer
     for sentence in del_sym:
+
+        print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!")
+        print(sentence)
+        print("!!!!!!!!!!!!!!!!!!!!!!!", end="")
+
         #Сплитим предложение на слова
         sent1 = sentence.split(" ")
         list_parts = []
@@ -120,7 +154,7 @@ def preprocess(text):
             count_uppercase = sum1
             # Вычисление эталона заглавных букв
             x1 = round(count_uppercase / len_text, 4)
-            print(f"Переменная x1 (верхний регистр) = {round(x1, 4)}")
+            print(f"\nПеременная x1 (верхний регистр) = {round(x1, 4)}")
             form_xs.append(x1)
 
             # ПЕРЕМЕННАЯ Х2 - КОЛИЧЕСТВО СОЮЗОВ
@@ -159,11 +193,14 @@ def preprocess(text):
             formula = abs(math.sqrt(min_x**2 + max_x**2))
             znachenie_list.append(formula)
 
-            print()
-            print('Количество "Не" в предложенни:', no)
-            print('Количество "Вот" в предложенни:', vot)
-            print('Количество "Если" в предложенни:', esli)
-            print()
+        print()
+        print("СЧЁТЧИК ЧАСТИЦ 'НЕ, ВОТ, ЕСЛИ'")
+        print("#############################")
+        print('Количество "Не" в предложенни:', no)
+        print('Количество "Вот" в предложенни:', vot)
+        print('Количество "Если" в предложенни:', esli)
+        print("#############################")
+        print()
 
         #Часто встречающиеся слова
         from nltk.corpus import stopwords
@@ -174,17 +211,36 @@ def preprocess(text):
             if token not in ru_stopwords:
                 filtered_tokens.append(token)
         fdist = FreqDist(filtered_tokens)
+        print()
+        print("ЧАСТОТА СЛОВ")
+        print("########################")
         print(*fdist.most_common(len(filtered_tokens)), sep='\n')
+        print("########################")
+        print()
+
+
 
         #Частота "не" в предложении
         f_ne = FreqDist(filtered_tokens)
 
-    print(znachenie_list)
-    max_sarc_list = max(znachenie_list)
-    min_sarc_list = min(znachenie_list)
-    print("Максимальное значение сарказма", "(x"+f"{max_x_index}"+"):", max_sarc_list,)
-    print("Минимальное значение сарказма", "(x"+f"{min_x_index}"+"):", min_sarc_list)
-    return znachenie_list, max_sarc_list, min_sarc_list
+        print()
+        print("АНАЛИЗ ТОНАЛЬНОСТИ ПРЕДЛОЖЕНИЯ:")
+        print("###############################")
+        print("Отрицательно:", neg_list[counter])
+        print("Положительно:", pos_list[counter])
+        print("Нейтрально:", neu_list[counter])
+        print("################################")
+        print()
+        counter+=1
+
+        print("ВЫЧИСЛЕНИЕ ТОЧЕК МАКСИМУМА И МИНИМУМА ВХОЖДЕНИЯ В САРКАЗМ")
+        print("##########################")
+        print(znachenie_list)
+        max_sarc_list = max(znachenie_list)
+        min_sarc_list = min(znachenie_list)
+        print("Максимальное значение сарказма", "(x"+f"{max_x_index}"+"):", max_sarc_list,)
+        print("Минимальное значение сарказма", "(x"+f"{min_x_index}"+"):", min_sarc_list)
+        print("##########################")
 
         #ТОКЕНИЗАЦИЯ
         #tokens = word_tokenize(" ".join(sentence))
