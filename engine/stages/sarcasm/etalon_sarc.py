@@ -9,6 +9,7 @@ from dostoevsky.tokenization import RegexTokenizer
 from dostoevsky.models import FastTextSocialNetworkModel
 from nltk.tokenize import word_tokenize
 from nltk.probability import FreqDist
+import matplotlib.pyplot as plt
 import fasttext
 import pymorphy2
 morph = pymorphy2.MorphAnalyzer()
@@ -100,7 +101,6 @@ def tonality(del_sym):
         if pos_list[s] is None:
             pos_list[s] = 0
     return neg_list,neu_list,pos_list
-
 
 
 def preprocess(text):
@@ -263,6 +263,9 @@ def preprocess(text):
         #print("ТОКЕНЫ: ", tokens)
 
 
+def count_quot():
+    split_text = big_text.split(".")
+
 def preprocess_big_text():
     split_text = big_text.split(".")
     print(split_text)
@@ -304,17 +307,9 @@ def preprocess_big_text():
                 # Сплитим строку из морф анализа
                 morph_split = "".join(part).split(",")
                 print(morph_split)
-        no = 0
-        vot = 0
-        esli = 0
-        for word in list_parts:
-            if word == "не":
-                no += 1
-            else:
-                if word == "вот":
-                    vot += 1
-                elif word == "если":
-                    esli += 1
+
+
+
 
         form_xs = list()
         if len_text != 0:
@@ -362,14 +357,24 @@ def preprocess_big_text():
             formula = abs(math.sqrt(min_x ** 2 + max_x ** 2))
             znachenie_list.append(formula)
 
-        print()
-        print("СЧЁТЧИК ЧАСТИЦ 'НЕ, ВОТ, ЕСЛИ'")
-        print("#############################")
-        print('Количество "Не" в предложенни:', no)
-        print('Количество "Вот" в предложенни:', vot)
-        print('Количество "Если" в предложенни:', esli)
-        print("#############################")
-        print()
+        no = 0
+        vot = 0
+        esli = 0
+
+        if list_parts.count("не") <= 0:
+            ne = 0
+        else:
+            ne = list_parts.count("не")
+        if list_parts.count("вот") <= 0:
+            vot = 0
+        else:
+            vot = list_parts.count("вот")
+        if list_parts.count("если") <=0:
+            esli = 0
+        else:
+            esli = list_parts.count("если")
+
+
 
 
 
@@ -429,6 +434,18 @@ def preprocess_big_text():
     print(*fdist.most_common(len(filtered_tokens)), sep='\n')
     print("########################")
     print()
+    fdist.plot(15)
+
+    print()
+    print("СЧЁТЧИК ЧАСТИЦ 'НЕ, ВОТ, ЕСЛИ'")
+    print("#############################")
+    print('Количество "Не" в предложенни:', words.count("не"))
+    print('Количество "Вот" в предложенни:', words.count("вот"))
+    print('Количество "Если" в предложенни:', words.count("если"))
+    print("#############################")
+    print()
+
+
 
 
 
