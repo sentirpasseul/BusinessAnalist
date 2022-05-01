@@ -1,4 +1,4 @@
-from sarcasm.etalon_sarc import morph_analyzer
+from sarcasm.algorythm import morph_analyzer
 
 
 def main():

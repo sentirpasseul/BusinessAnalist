@@ -1,47 +1,42 @@
 from dostoevsky.tokenization import RegexTokenizer
 from dostoevsky.models import FastTextSocialNetworkModel
 import fasttext
-import pymorphy2
-morph = pymorphy2.MorphAnalyzer()
 
 fasttext.FastText.eprint = lambda x: None
 FastTextSocialNetworkModel.MODEL_PATH = 'fasttext-social-network-model.bin'
 
-tokenizer = RegexTokenizer()
-model = FastTextSocialNetworkModel(tokenizer=tokenizer)
-"""""
-##Распознавание тональности текста
+def tonality(del_sym):
+    fasttext.FastText.eprint = lambda x: None
+    FastTextSocialNetworkModel.MODEL_PATH = 'fasttext-social-network-model.bin'
 
-def get_prec():
-    text = fifteen()
-    del_sym = preprocess_text(text).split("\n")
-    print(del_sym)
-    for sentence in del_sym:
-        # Сплитим предложение на слова
-        sent1 = sentence.split(" ")
-        list_parts = []
+    tokenizer = RegexTokenizer()
+    model = FastTextSocialNetworkModel(tokenizer=tokenizer)
 
-        print()
-        # Разбиваем спличенный текст на токены
-        sub1_reset = word_tokenize(" ".join(sent1))
-
-        tokenize_sentence = word_tokenize(" ".join(sent1))
-        results = model.predict(sub1_reset, k=4)
-        res_ton = dict
-        return sentence, results
-def tonality():
-    sentence, results = get_prec()
-    for sentence, sentiment in zip(sentence, results):
+    results = model.predict(del_sym, k=4)
+    neu_list = list()
+    neg_list = list()
+    pos_list = list()
+    for sentence, sentiment in zip(del_sym, results):
         # Анализ Тональности предложения
         neu = sentiment.get('neutral')
+        neu_list.append(neu)
         p = sentiment.get('positive')
+        pos_list.append(p)
         neg = sentiment.get('negative')
+        neg_list.append(neg)
 
-        print(sentence, '\n',
-              'neutral = ', sentiment.get('neutral'), '\n',
-              'positive = ', sentiment.get('positive'), '\n'
-              'negative = ', sentiment.get('negative'), '\n'
-            )
-
-        # return neu, p, neg
-"""""
+        #print(sentence, '\n',
+         #     'neutral = ', sentiment.get('neutral'), '\n',
+          #    'positive = ', sentiment.get('positive'), '\n'
+           #   'negative = ', sentiment.get('negative'), '\n'
+            #  )
+    for s in range(len(neg_list)):
+        if neg_list[s] is None:
+            neg_list[s] = 0
+    for s in range(len(neu_list)):
+        if neu_list[s] is None:
+            neu_list[s] = 0
+    for s in range(len(pos_list)):
+        if pos_list[s] is None:
+            pos_list[s] = 0
+    return neg_list,neu_list,pos_list

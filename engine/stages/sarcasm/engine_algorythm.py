@@ -1,12 +1,12 @@
 import math
 import re
 import string
-
+from get_text import *
+from tonality import *
 import nltk.downloader
 
 split_regex = re.compile(r'[|!|?|…]')
-from dostoevsky.tokenization import RegexTokenizer
-from dostoevsky.models import FastTextSocialNetworkModel
+
 from nltk.tokenize import word_tokenize
 from nltk.probability import FreqDist
 import matplotlib.pyplot as plt
@@ -15,104 +15,7 @@ import pymorphy2
 morph = pymorphy2.MorphAnalyzer()
 nltk.downloader.Downloader('webtext')
 
-fasttext.FastText.eprint = lambda x: None
-FastTextSocialNetworkModel.MODEL_PATH = 'fasttext-social-network-model.bin'
 
-file = open(f'data.txt', 'r', encoding="utf-8")
-dataset_sarcasm = file.read()
-
-file_big_text = open(f'test.txt', 'r', encoding='utf-8')
-dataset_notsarc = file_big_text.read()
-
-file_test2 = open(f'test2.txt', 'r', encoding='utf-8')
-test2 = file_test2.read()
-#only_text = re.sub(r'[\d]', '', text)
-
-#class check_sarc():
-
-# @staticmethod
-def Question( s):
-    for symbol in s:
-        if "?" in symbol:
-            d = True
-
-#@staticmethod
-
-def split_big_text():
-    list_text = (dataset_notsarc.split('.'))
-    return list_text
-
-def fifteen():
-    #sentences = filter(lambda t: t, [t.strip() for t in text.split(r'[\d]')])
-    #sentences = [s.strip() for s in split_regex.split(text)]
-    sarc_sentences = []
-    #rand_15 = random.randint()
-    #15% из всего текста:
-    #for
-    list_text = (dataset_sarcasm.split('\n'))
-
-    form_15 = (170*15)//100
-    print(form_15)
-    ar_15 = []
-    for s in range(form_15):     # s - каждый текст от 1 до 25
-        ar_15.append(list_text[s])
-
-    return ar_15
-
-
-def preprocess_text(text1):
-    text1 = " ".join(text1).lower().replace("ё", "е")
-    text1 = re.sub('((www\.[^\s]+)|(https?://[^\s]+))', 'URL', text1)
-    text1 = re.sub('@[^\s]+', 'USER', text1)
-    text1 = re.sub('[^a-zA-Zа-яА-Я1-9]+', ' ', text1)
-    text1 = re.sub(' +', ' ', text1)
-    text1 = re.sub('([0-9])', "\n", text1)
-    return text1.strip()
-
-def tonality(del_sym):
-    fasttext.FastText.eprint = lambda x: None
-    FastTextSocialNetworkModel.MODEL_PATH = 'fasttext-social-network-model.bin'
-
-    tokenizer = RegexTokenizer()
-    model = FastTextSocialNetworkModel(tokenizer=tokenizer)
-
-    results = model.predict(del_sym, k=4)
-    neu_list = list()
-    neg_list = list()
-    pos_list = list()
-    for sentence, sentiment in zip(del_sym, results):
-        # Анализ Тональности предложения
-        neu = sentiment.get('neutral')
-        neu_list.append(neu)
-        p = sentiment.get('positive')
-        pos_list.append(p)
-        neg = sentiment.get('negative')
-        neg_list.append(neg)
-
-        #print(sentence, '\n',
-         #     'neutral = ', sentiment.get('neutral'), '\n',
-          #    'positive = ', sentiment.get('positive'), '\n'
-           #   'negative = ', sentiment.get('negative'), '\n'
-            #  )
-    for s in range(len(neg_list)):
-        if neg_list[s] is None:
-            neg_list[s] = 0
-    for s in range(len(neu_list)):
-        if neu_list[s] is None:
-            neu_list[s] = 0
-    for s in range(len(pos_list)):
-        if pos_list[s] is None:
-            pos_list[s] = 0
-    return neg_list,neu_list,pos_list
-
-def no_dig():
-    file = open('test.txt', 'r', encoding='utf-8')
-    f = file.read()
-    fis = re.sub("[\d]", "", f)
-
-
-def count_quot():
-    split_text = dataset_notsarc.split(".")
 
 def preprocess_big_text():
     count_sentence = dataset_sarcasm.count("\n")
@@ -299,16 +202,3 @@ def preprocess_big_text():
     print()
 
     print("Count Quotes:", count_q)
-
-
-
-
-
-def morph_analyzer():
-    text = fifteen()
-    #preproc = preprocess(text)
-    big_text = preprocess_big_text()
-# @classmethod
-
-morph_analyzer()
-

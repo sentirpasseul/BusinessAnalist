@@ -1,6 +1,7 @@
 import nltk
 
 import pymorphy2
+"""
 
 morph = pymorphy2.MorphAnalyzer()
 
@@ -18,7 +19,6 @@ async def counters(len_symb_text, list_parts, len_text, f, len_sent, timer):
 
 
 
-""""
 standard_100 = open(f'/standards/standard_100', 'w')
 with open(f'/standards/standard_100', 'w'):
     display_counts(count_uppercase, count_unions,
