@@ -2,7 +2,7 @@ import math
 import re
 import string
 from get_text import *
-from tonality import *
+from tonality import tonality
 import nltk.downloader
 from nltk.tokenize import word_tokenize
 from nltk.probability import FreqDist
@@ -15,8 +15,13 @@ morph = pymorphy2.MorphAnalyzer()
 nltk.downloader.Downloader('webtext')
 
 def preprocess_big_text():
-    count_sentence = dataset_sarcasm.count("\n")
-    split_text = dataset_sarcasm.split(".")
+    text = f_witcher
+    split_text = text.split(".")
+    #if text.count("\n") != 0:
+    count_sentence = text.count("\n")
+    #else:
+    #count_sentence = text.count(".")
+
     print(split_text)
 
     neg_list, pos_list, neu_list = tonality(split_text)
@@ -60,6 +65,7 @@ def preprocess_big_text():
         count_bi = sentence.count("бы")
         count_zap_no = sentence.count(','+'но')
 
+        """
         neg_sent, pos_sent, neu_sent = tonality(sentence)
 
         sum_neg_sent = math.fsum(neg_sent)
@@ -71,7 +77,7 @@ def preprocess_big_text():
         print("Положительно:", sum_pos_sent)
         print("Нейтрально:", sum_neu_sent)
         print()
-
+        """
         print("Количество БЫ:", count_bi)
         print("Количество ', но'", count_zap_no)
 
@@ -147,12 +153,23 @@ def preprocess_big_text():
     sum_neu = math.fsum(neu_list)
     sum_pos = math.fsum(pos_list)
 
+    if sum_pos != 0 or sum_neu != 0 or sum_neg != 0:
+        diff_neg = sum_neg / count_sentence
+        diff_neu = sum_neu / count_sentence
+        diff_pos = sum_pos / count_sentence
+
     print()
     print("#########################")
     print("ОБЩАЯ ОЦЕНКА ТОНАЛЬНОСТИ ТЕКСТА")
     print("Отрицательно:", sum_neg)
     print("Положительно:", sum_neu)
     print("Нейтрально:", sum_pos)
+
+    print()
+    print("Вычисление меры негатива на одно предложение:", diff_neg)
+    print("Вычисление меры позитива на одно предложение:", diff_pos)
+    print("Вычисление меры нейтральности на одно предложение:", diff_neu)
+    print()
 
     print("СЧЁТЧИК ВСЕХ ПРЕДЛОЖЕНИЙ В ТЕКСТЕ")
     print(count_sentence)
@@ -192,6 +209,8 @@ def preprocess_big_text():
     print('Количество "Не" в предложенни:', words.count("не"))
     print('Количество "Вот" в предложенни:', words.count("вот"))
     print('Количество "Если" в предложенни:', words.count("если"))
+    print('Количество "Бы" в предложении:', words.count("бы"))
+    print('Количество ", но" в предложении:', words.count(", но"))
     print("#############################")
     print()
 
