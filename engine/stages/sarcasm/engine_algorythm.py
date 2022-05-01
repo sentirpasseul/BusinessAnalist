@@ -4,18 +4,15 @@ import string
 from get_text import *
 from tonality import *
 import nltk.downloader
-
-split_regex = re.compile(r'[|!|?|…]')
-
 from nltk.tokenize import word_tokenize
 from nltk.probability import FreqDist
 import matplotlib.pyplot as plt
 import fasttext
 import pymorphy2
+
+split_regex = re.compile(r'[|!|?|…]')
 morph = pymorphy2.MorphAnalyzer()
 nltk.downloader.Downloader('webtext')
-
-
 
 def preprocess_big_text():
     count_sentence = dataset_sarcasm.count("\n")
@@ -26,7 +23,6 @@ def preprocess_big_text():
     counter = 0
 
     znachenie_list = list()
-
 
     for sentence in split_text:
 
@@ -145,8 +141,6 @@ def preprocess_big_text():
         print("Максимальное значение сарказма", "(x" + f"{max_x_index}" + "):", max_sarc_list, )
         print("Минимальное значение сарказма", "(x" + f"{min_x_index}" + "):", min_sarc_list)
         print("##########################")
-
-
 
 
     sum_neg = math.fsum(neg_list)
