@@ -3,12 +3,16 @@ import re
 import string
 from get_text import *
 from tonality import tonality
+#from ui.main_ui import input_text
 import nltk.downloader
 from nltk.tokenize import word_tokenize
 from nltk.probability import FreqDist
+from collocations import *
+import pandas as pd
 import matplotlib.pyplot as plt
 import fasttext
 import pymorphy2
+from gensim.models import Word2Vec
 
 split_regex = re.compile(r'[|!|?|…]')
 morph = pymorphy2.MorphAnalyzer()
@@ -25,7 +29,7 @@ def preprocess_big_text(text):
         count_sentence = text.count(".")
         split_text = text.split(".")
 
-    
+
     print(split_text)
 
     neg_list, pos_list, neu_list = tonality(split_text)
@@ -33,7 +37,27 @@ def preprocess_big_text(text):
 
     znachenie_list = list()
 
+    col = "".join(collocations)
+    #w2v_model = Word2Vec(min_count=10, window=2, negative=10, alpha=0.03, min_alpha=0.0007, sample=6e-5, sg=1)
+    ##w2v_model.build_vocab(dict1)
+    #w2v_model.train(dict1, total_examples=w2v_model.corpus_count, epochs=30, report_delay=1)
+    #w2v_model.init_sims(replace=True)
+
+    dict = {'Sentence': split_text, 'Негативно': neg_list, "Позитивно": pos_list, "Нейтрально": neu_list}
+
+    df = pd.DataFrame(dict)
+    print(df)
+
+    count_if = 0
+
     for sentence in split_text:
+
+        #print(w2v_model.wv.most_similar(positive=[f"{sentence}"]))
+
+
+        if col in sentence:
+            count_if +=1
+            print("ЕСТь")
 
         #print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!")
         #print(sentence)
@@ -217,6 +241,7 @@ def preprocess_big_text(text):
     print('Количество "Не" в предложенни:', words.count("не"))
     print('Количество "Вот" в предложенни:', words.count("вот"))
     print('Количество "Если" в предложенни:', words.count("если"))
+    print('Количество ", eсли" в предложенни:', count_if)
     print('Количество "Бы" в предложении:', words.count("бы"))
     print('Количество ", но" в предложении:', words.count(", но"))
     print("#############################")
