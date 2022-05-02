@@ -14,14 +14,18 @@ split_regex = re.compile(r'[|!|?|…]')
 morph = pymorphy2.MorphAnalyzer()
 nltk.downloader.Downloader('webtext')
 
-def preprocess_big_text():
-    text = f_witcher
-    split_text = text.split(".")
-    #if text.count("\n") != 0:
-    count_sentence = text.count("\n")
-    #else:
-    #count_sentence = text.count(".")
+def preprocess_big_text(text):
+    split_text = text
+    if text.count("\n") >2:
+        print("Строчек больше 2")
+        count_sentence = text.count("\n")
+        split_text = text.split("\n")
+    else:
+        print("Строчек меньше двух")
+        count_sentence = text.count(".")
+        split_text = text.split(".")
 
+    
     print(split_text)
 
     neg_list, pos_list, neu_list = tonality(split_text)
@@ -31,23 +35,23 @@ def preprocess_big_text():
 
     for sentence in split_text:
 
-        print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!")
-        print(sentence)
-        print("!!!!!!!!!!!!!!!!!!!!!!!", end="")
+        #print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!")
+        #print(sentence)
+        #print("!!!!!!!!!!!!!!!!!!!!!!!", end="")
 
         # Сплитим предложение на слова
         sent1 = sentence.split(" ")
         list_parts = []
 
-        print()
+        #print()
         # Разбиваем спличенный текст на токены
         sub1_reset = word_tokenize(" ".join(sent1))
-        if sub1_reset != " " and sub1_reset != "":
-            print(sub1_reset)
+        #if sub1_reset != " " and sub1_reset != "":
+            #print(sub1_reset)
 
         # СЧЁТЧИК ВСЕХ СЛОВ В ТЕКСТЕ
         len_text = len(sub1_reset)
-        print("Счётчик всех слов в тексте:", len_text, sep="\n")
+        #print("Счётчик всех слов в тексте:", len_text, sep="\n")
 
         sum1 = 0
         # Анализируем каждое слово в предложении
@@ -56,11 +60,11 @@ def preprocess_big_text():
                 parse_parts = morph.parse(word)[0]
                 part = parse_parts.tag.cyr_repr
                 list_parts.append(part)
-                print(f"Для слова '{word}' частью речи является '{part}'")
+                #print(f"Для слова '{word}' частью речи является '{part}'")
 
                 # Сплитим строку из морф анализа
                 morph_split = "".join(part).split(",")
-                print(morph_split)
+                #print(morph_split)
 
         count_bi = sentence.count("бы")
         count_zap_no = sentence.count(','+'но')
@@ -78,10 +82,10 @@ def preprocess_big_text():
         print("Нейтрально:", sum_neu_sent)
         print()
         """
-        print("Количество БЫ:", count_bi)
-        print("Количество ', но'", count_zap_no)
+        #print("Количество БЫ:", count_bi)
+        #print("Количество ', но'", count_zap_no)
 
-
+        """
         form_xs = list()
         if len_text != 0:
 
@@ -128,17 +132,18 @@ def preprocess_big_text():
             formula = abs(math.sqrt(min_x ** 2 + max_x ** 2))
             znachenie_list.append(formula)
 
+        """
+        #print()
+        #print("АНАЛИЗ ТОНАЛЬНОСТИ ПРЕДЛОЖЕНИЯ:")
+        #print("###############################")
+        #print("Отрицательно:", neg_list[counter])
+        #print("Положительно:", pos_list[counter])
+        #print("Нейтрально:", neu_list[counter])
+        #print("################################")
+        #print()
+        #counter += 1
 
-        print()
-        print("АНАЛИЗ ТОНАЛЬНОСТИ ПРЕДЛОЖЕНИЯ:")
-        print("###############################")
-        print("Отрицательно:", neg_list[counter])
-        print("Положительно:", pos_list[counter])
-        print("Нейтрально:", neu_list[counter])
-        print("################################")
-        print()
-        counter += 1
-
+        """
         print("ВЫЧИСЛЕНИЕ ТОЧЕК МАКСИМУМА И МИНИМУМА ВХОЖДЕНИЯ В САРКАЗМ")
         print("##########################")
         print(znachenie_list)
@@ -147,6 +152,7 @@ def preprocess_big_text():
         print("Максимальное значение сарказма", "(x" + f"{max_x_index}" + "):", max_sarc_list, )
         print("Минимальное значение сарказма", "(x" + f"{min_x_index}" + "):", min_sarc_list)
         print("##########################")
+        """
 
 
     sum_neg = math.fsum(neg_list)
@@ -158,6 +164,12 @@ def preprocess_big_text():
         diff_neu = sum_neu / count_sentence
         diff_pos = sum_pos / count_sentence
 
+        print()
+        print("Вычисление меры негатива на одно предложение:", diff_neg)
+        print("Вычисление меры позитива на одно предложение:", diff_pos)
+        print("Вычисление меры нейтральности на одно предложение:", diff_neu)
+        print()
+
     print()
     print("#########################")
     print("ОБЩАЯ ОЦЕНКА ТОНАЛЬНОСТИ ТЕКСТА")
@@ -165,11 +177,7 @@ def preprocess_big_text():
     print("Положительно:", sum_neu)
     print("Нейтрально:", sum_pos)
 
-    print()
-    print("Вычисление меры негатива на одно предложение:", diff_neg)
-    print("Вычисление меры позитива на одно предложение:", diff_pos)
-    print("Вычисление меры нейтральности на одно предложение:", diff_neu)
-    print()
+
 
     print("СЧЁТЧИК ВСЕХ ПРЕДЛОЖЕНИЙ В ТЕКСТЕ")
     print(count_sentence)
@@ -214,4 +222,4 @@ def preprocess_big_text():
     print("#############################")
     print()
 
-    print("Count Quotes:", count_q)
+    #print("Count Quotes:", count_q)
