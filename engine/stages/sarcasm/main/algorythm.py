@@ -59,7 +59,7 @@ def count_quot():
 
 def morph_analyzer():
     #preproc = preprocess(text)
-    big_text = preprocess_big_text()
+    big_text = analyzer()
 # @classmethod
 
 morph_analyzer()

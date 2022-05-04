@@ -1,7 +1,5 @@
 import math
 import re
-import string
-from get_text import *
 from tonality import tonality
 #from ui.main_ui import input_text
 import nltk.downloader
@@ -9,6 +7,7 @@ from nltk.tokenize import word_tokenize
 from nltk.probability import FreqDist
 from collocations import *
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import fasttext
 import pymorphy2
@@ -18,7 +17,7 @@ split_regex = re.compile(r'[|!|?|…]')
 morph = pymorphy2.MorphAnalyzer()
 nltk.downloader.Downloader('webtext')
 
-def preprocess_big_text(text):
+def analyzer(text):
     split_text = text
     if text.count("\n") >2:
         print("Строчек больше 2")
@@ -46,7 +45,8 @@ def preprocess_big_text(text):
     dict = {'Sentence': split_text, 'Негативно': neg_list, "Позитивно": pos_list, "Нейтрально": neu_list}
 
     df = pd.DataFrame(dict)
-    print(df)
+    df_width = df.style.set_properties(subset=['Sentence'], **{'width': '300px'})
+    print(df_width)
 
     count_if = 0
 
