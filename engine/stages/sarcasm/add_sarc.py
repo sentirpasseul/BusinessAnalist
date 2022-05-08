@@ -1,7 +1,7 @@
 from nltk.tokenize import word_tokenize
 
 def preproc():
-    file = open('data.txt', 'r', encoding="utf-8")
+    file = open('main/data.txt', 'r', encoding="utf-8")
     text = file.read()
     split_text = text.split(f"{str.isdigit}")
     tok = word_tokenize(" ".join(split_text), "russian")
@@ -11,7 +11,7 @@ def preproc():
 t = "СТОП"
 text = ""
 while t != text:
-    file_sarc = open('dataset_sarc.txt', 'a+')
+    file_sarc = open('main/dataset_sarc.txt', 'a+')
     with file_sarc:
             text = input("Введите предложение: ")
             if text != "СТОП":
