@@ -34,24 +34,11 @@ class Algorythm():
         print(self.split_text)
 
 
-
-
     def preprocess(self):
         text = self.text
-
-
         # vis = vizual_ton(split_text, neg_list, pos_list, neu_list)
         counter = 0
-
         znachenie_list = list()
-
-
-    def vizual_ton(self):
-
-        #positions = np.arange(len())
-        s = 11
-
-
 
     def analyzer(self):
         text = self.text
