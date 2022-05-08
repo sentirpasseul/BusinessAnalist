@@ -20,7 +20,9 @@ nltk.downloader.Downloader('webtext')
 class Algorythm():
 
     def __init__(self, text):
-        self.col = "".join(collocations)
+        self.col_if = "".join(collocations_if)
+        self.col_bi = "".join(collocations_bi)
+        self.col_no = "".join(collocations_no)
         self.text = text
         if text.count("\n") > 1:
             print("Строчек больше 1")
@@ -54,13 +56,19 @@ class Algorythm():
 
         count_if = 0
         sentences_ton = list()
+        count_bi = 0
+        count_zap_no = 0
 
         for sentence in self.split_text:
 
             #print(w2v_model.wv.most_similar(positive=[f"{sentence}"]))
-            if self.col in sentence:
+            if self.col_if in sentence:
                 count_if +=1
                 print("ЕСТь")
+            if self.col_bi in sentence:
+                count_bi +=1
+            if self.col_no in sentence:
+                count_zap_no +=1
 
             #print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!")
             #print(sentence)
@@ -93,8 +101,8 @@ class Algorythm():
                     morph_split = "".join(part).split(",")
                     #print(morph_split)
 
-            count_bi = sentence.count("бы")
-            count_zap_no = sentence.count(','+'но')
+           #self.count_bi = sentence.count("бы")
+           # self.count_zap_no = sentence.count(', но')
 
             """
             neg_sent, pos_sent, neu_sent = tonality(sentence)
@@ -251,9 +259,10 @@ class Algorythm():
         print('Количество "Вот" в предложенни:', words.count("вот"))
         print('Количество "Если" в предложенни:', words.count("если"))
         print('Количество ", eсли" в предложенни:', count_if)
-        print('Количество "Бы" в предложении:', words.count("бы"))
-        print('Количество ", но" в предложении:', words.count(", но"))
+        print('Количество "Бы" в предложении:', count_bi)
+        print('Количество ", но" в предложении:', count_zap_no)
         print("#############################")
         print()
+
 
     #print("Count Quotes:", count_q)
