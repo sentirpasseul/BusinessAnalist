@@ -123,22 +123,6 @@ class Algorythm():
             #print("Количество БЫ:", count_bi)
             #print("Количество ', но'", count_zap_no)
 
-            """
-            if len_text != 0:
-    
-    
-                # ПЕРЕМЕННАЯ Х4 - КОЛИЧЕСТВО УСИЛИВАЮЩИХ ЗНАКОВ ПРЕПИНАНИЯ
-                count_gain_punct = sub1_reset.count("!") + sub1_reset.count("?")
-                # Вычисление эталона усиливающих знаков препинания
-                x4 = round((count_gain_punct / len_text) / 10, 4)
-                print(f"Переменная х4 = {x4}")
-                form_xs.append(x4)
-    
-                
-    
-                
-    
-            """
             #print()
             #print("АНАЛИЗ ТОНАЛЬНОСТИ ПРЕДЛОЖЕНИЯ:")
             #print("###############################")
@@ -234,34 +218,46 @@ class Algorythm():
         # Вычисление эталона междометий
         x1 = count_interj
         print(f"Переменная х1 (междометия) = {x1}")
-        form_xs.append(x1)
+        if x1!= 0:
+            form_xs.append(x1)
 
         # ПЕРЕМЕННАЯ Х2 - КОЛИЧЕСТВО "БЫ"
         x2 = count_bi
-        form_xs.append(x2)
+        print(f'Переменная х2 (количество бы) = {x2}')
+        if x2 != 0:
+           form_xs.append(x2)
 
         # ПЕРЕМЕННАЯ Х3 - КОЛИЧЕСТВО ", ЕСЛИ"
         x3 = count_if
-        form_xs.append(x3)
+        print(f'Переменная х3 (количество , если) = {x3}')
+        if x3 != 0:
+            form_xs.append(x3)
+
+        form_xs.append(round(sum_neg, 3))
+        form_xs.append(round(sum_neu,3))
+        form_xs.append(round(sum_pos, 3))
 
         znachenie_list = list()
-
-        max_x, max_x_index = max(form_xs), form_xs.index(max(form_xs)) + 1
-        min_x, min_x_index = min(form_xs), form_xs.index(min(form_xs)) + 1
+        print(form_xs)
+        max_x = max(form_xs)
+        print("Максимальный х = ", max_x)
+        max_x_index = form_xs.index(max(form_xs)) +1
+        min_x = min(form_xs)
+        print("Минимальный х = ", min_x)
+        min_x_index = form_xs.index(min(form_xs)) +1
         formula = abs(math.sqrt(min_x ** 2 + max_x ** 2))
-        znachenie_list.append(formula)
+        print("Значение по формуле: ", formula)
 
 
-        print("ВЫЧИСЛЕНИЕ ТОЧЕК МАКСИМУМА И МИНИМУМА ВХОЖДЕНИЯ В САРКАЗМ")
-        print("##########################")
-        print(znachenie_list)
-        max_sarc_list = max(znachenie_list)
-        min_sarc_list = min(znachenie_list)
-        print("Максимальное значение сарказма", "(x" + f"{max_x_index}" + "):", max_sarc_list, )
-        print("Минимальное значение сарказма", "(x" + f"{min_x_index}" + "):", min_sarc_list)
-        print("##########################")
 
-
+        #print("ВЫЧИСЛЕНИЕ ТОЧЕК МАКСИМУМА И МИНИМУМА ВХОЖДЕНИЯ В САРКАЗМ")
+        #print("##########################")
+        #print(znachenie_list)
+        #max_sarc_list = max(znachenie_list)
+        #min_sarc_list = min(znachenie_list)
+        #print("Максимальное значение сарказма", "(x" + f"{max_x_index}" + "):", max_sarc_list, )
+        #print("Минимальное значение сарказма", "(x" + f"{min_x_index}" + "):", min_sarc_list)
+        #print("##########################")
 
         print("!"*50)
         print()
