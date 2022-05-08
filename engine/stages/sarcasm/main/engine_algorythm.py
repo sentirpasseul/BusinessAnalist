@@ -98,7 +98,7 @@ class Algorythm():
                     parse_parts = morph.parse(word)[0]
                     part = parse_parts.tag.cyr_repr
                     list_parts.append(part)
-                    print(f"Для слова '{word}' частью речи является '{part}'")
+                    #print(f"Для слова '{word}' частью речи является '{part}'")
 
                     # Сплитим строку из морф анализа
                     morph_split = "".join(part).split(",")
@@ -124,7 +124,6 @@ class Algorythm():
             #print("Количество ', но'", count_zap_no)
 
             """
-            form_xs = list()
             if len_text != 0:
     
     
@@ -137,10 +136,7 @@ class Algorythm():
     
                 
     
-                max_x, max_x_index = max(form_xs), form_xs.index(max(form_xs)) + 1
-                min_x, min_x_index = min(form_xs), form_xs.index(min(form_xs)) + 1
-                formula = abs(math.sqrt(min_x ** 2 + max_x ** 2))
-                znachenie_list.append(formula)
+                
     
             """
             #print()
@@ -153,16 +149,7 @@ class Algorythm():
             #print()
             #counter += 1
 
-            """
-            print("ВЫЧИСЛЕНИЕ ТОЧЕК МАКСИМУМА И МИНИМУМА ВХОЖДЕНИЯ В САРКАЗМ")
-            print("##########################")
-            print(znachenie_list)
-            max_sarc_list = max(znachenie_list)
-            min_sarc_list = min(znachenie_list)
-            print("Максимальное значение сарказма", "(x" + f"{max_x_index}" + "):", max_sarc_list, )
-            print("Минимальное значение сарказма", "(x" + f"{min_x_index}" + "):", min_sarc_list)
-            print("##########################")
-            """
+
         for sentence in zip(self.split_text, self.neg_list, self.neu_list, self.pos_list):
             df1 = pd.DataFrame(columns=["sentences", "Негативно", "Позитивно", "Нейтрально"])
         df = pd.DataFrame(sentences_ton)
@@ -240,12 +227,39 @@ class Algorythm():
         print()
 
         print("ВЫЧИСЛЕНИЕ ПО ФОРМУЛЕ")
+        form_xs = list()
 
         # ПЕРЕМЕННАЯ Х1 - КОЛИЧЕСТВО МЕЖДОМЕТИЙ
 
         # Вычисление эталона междометий
-        x5 = count_interj
-        print(f"Переменная х5 (междометия) = {x5}")
+        x1 = count_interj
+        print(f"Переменная х1 (междометия) = {x1}")
+        form_xs.append(x1)
+
+        # ПЕРЕМЕННАЯ Х2 - КОЛИЧЕСТВО "БЫ"
+        x2 = count_bi
+        form_xs.append(x2)
+
+        # ПЕРЕМЕННАЯ Х3 - КОЛИЧЕСТВО ", ЕСЛИ"
+        x3 = count_if
+        form_xs.append(x3)
+
+        znachenie_list = list()
+
+        max_x, max_x_index = max(form_xs), form_xs.index(max(form_xs)) + 1
+        min_x, min_x_index = min(form_xs), form_xs.index(min(form_xs)) + 1
+        formula = abs(math.sqrt(min_x ** 2 + max_x ** 2))
+        znachenie_list.append(formula)
+
+
+        print("ВЫЧИСЛЕНИЕ ТОЧЕК МАКСИМУМА И МИНИМУМА ВХОЖДЕНИЯ В САРКАЗМ")
+        print("##########################")
+        print(znachenie_list)
+        max_sarc_list = max(znachenie_list)
+        min_sarc_list = min(znachenie_list)
+        print("Максимальное значение сарказма", "(x" + f"{max_x_index}" + "):", max_sarc_list, )
+        print("Минимальное значение сарказма", "(x" + f"{min_x_index}" + "):", min_sarc_list)
+        print("##########################")
 
 
 
