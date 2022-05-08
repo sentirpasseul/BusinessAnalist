@@ -17,10 +17,10 @@ split_regex = re.compile(r'[|!|?|…]')
 morph = pymorphy2.MorphAnalyzer()
 nltk.downloader.Downloader('webtext')
 
-def analyzer(text):
+def analyzer(text: str):
     split_text = text
-    if text.count("\n") >2:
-        print("Строчек больше 2")
+    if text.count("\n") >1:
+        print("Строчек больше 1")
         count_sentence = text.count("\n")
         split_text = text.split("\n")
     else:
@@ -42,13 +42,13 @@ def analyzer(text):
     #w2v_model.train(dict1, total_examples=w2v_model.corpus_count, epochs=30, report_delay=1)
     #w2v_model.init_sims(replace=True)
 
-    dict = {'Sentence': split_text, 'Негативно': neg_list, "Позитивно": pos_list, "Нейтрально": neu_list}
+    #dict = {'Sentence': split_text, 'Негативно': neg_list, "Позитивно": pos_list, "Нейтрально": neu_list}
 
-    df = pd.DataFrame(dict)
-    df_width = df.style.set_properties(subset=['Sentence'], **{'width': '300px'})
-    print(df_width)
+    #df = pd.DataFrame(dict)
+    #print(df_width)
 
     count_if = 0
+    sentences_ton = list()
 
     for sentence in split_text:
 
@@ -177,7 +177,13 @@ def analyzer(text):
         print("Минимальное значение сарказма", "(x" + f"{min_x_index}" + "):", min_sarc_list)
         print("##########################")
         """
+    for sentence in zip(split_text, neg_list, neu_list, pos_list):
+        df1 = pd.DataFrame(columns=["sentences", "Негативно", "Позитивно", "Нейтрально"])
+    df = pd.DataFrame(sentences_ton)
+    df_width = df.style.set_properties(subset=['Sentence'], **{'width': '300px'})
 
+    print("ТЕСТИРОВАНИЕ ФУНКЦИИ")
+    print(df)
 
     sum_neg = math.fsum(neg_list)
     sum_neu = math.fsum(neu_list)

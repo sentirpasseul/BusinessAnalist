@@ -5,7 +5,7 @@ import fasttext
 fasttext.FastText.eprint = lambda x: None
 FastTextSocialNetworkModel.MODEL_PATH = 'fasttext-social-network-model.bin'
 
-def tonality(del_sym):
+def tonality(del_sym: list):
     fasttext.FastText.eprint = lambda x: None
     FastTextSocialNetworkModel.MODEL_PATH = 'fasttext-social-network-model.bin'
 

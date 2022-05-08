@@ -12,3 +12,9 @@ f_witcher = file_witcher.read()
 
 file_sarc = open(f'etalons/etalon_sarc', 'r', encoding='utf-8')
 f_sarc2 = file_sarc.read()
+
+file_wiki_sarc = open(f'etalons/wiki_sarc.txt', 'r', encoding='utf-8')
+f_wiki_sarc = file_wiki_sarc.read()
+
+file_nsarc2 = open(f'etalons/nsarc2.txt', 'r', encoding='utf-8')
+f_nsarc2 = file_nsarc2.read()
