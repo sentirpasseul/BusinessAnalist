@@ -20,8 +20,12 @@ nltk.downloader.Downloader('webtext')
 class Algorythm():
 
     def __init__(self, text):
-        self.col = "".join(collocations)
+        self.col_if = "".join(collocations_if)
+        self.col_bi = "".join(collocations_bi)
+        self.col_no = "".join(collocations_no)
         self.text = text
+
+        print("!"*50)
         if text.count("\n") > 1:
             print("Строчек больше 1")
             self.count_sentence = text.count("\n")
@@ -54,13 +58,19 @@ class Algorythm():
 
         count_if = 0
         sentences_ton = list()
-
+        count_bi = 0
+        count_zap_no = 0
+        count_interj = 0
         for sentence in self.split_text:
 
             #print(w2v_model.wv.most_similar(positive=[f"{sentence}"]))
-            if self.col in sentence:
+            if self.col_if in sentence:
                 count_if +=1
                 print("ЕСТь")
+            if self.col_bi in sentence:
+                count_bi +=1
+            if self.col_no in sentence:
+                count_zap_no +=1
 
             #print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!")
             #print(sentence)
@@ -84,6 +94,7 @@ class Algorythm():
             # Анализируем каждое слово в предложении
             for word in sent1:
                 if word != "":
+                    word = re.sub("[,@\'?\.$%_]", "", word)
                     parse_parts = morph.parse(word)[0]
                     part = parse_parts.tag.cyr_repr
                     list_parts.append(part)
@@ -92,9 +103,9 @@ class Algorythm():
                     # Сплитим строку из морф анализа
                     morph_split = "".join(part).split(",")
                     #print(morph_split)
-
-            count_bi = sentence.count("бы")
-            count_zap_no = sentence.count(','+'но')
+                count_interj += list_parts.count("МЕЖД")
+            #self.count_bi = sentence.count("бы")
+           # self.count_zap_no = sentence.count(', но')
 
             """
             neg_sent, pos_sent, neu_sent = tonality(sentence)
@@ -113,32 +124,8 @@ class Algorythm():
             #print("Количество ', но'", count_zap_no)
 
             """
-            form_xs = list()
             if len_text != 0:
     
-                # ПЕРЕМЕННАЯ Х1 - КОЛИЧЕСТВО "БЫ"
-                for s in sentence:
-                    if s.isupper():
-                        sum1 += 1
-                count_uppercase = sum1
-                # Вычисление эталона "бы"
-                x1 = count_bi
-                print(f"\nПеременная x1 ('БЫ') = {round(x1, 4)}")
-                form_xs.append(x1)
-    
-                # ПЕРЕМЕННАЯ Х2 - КОЛИЧЕСТВО СОЮЗОВ
-                count_unions = list_parts.count("СОЮЗ")
-                # Вычисление эталона союзов
-                x2 = round(count_unions / len_text, 4)
-                print(f"Переменная х2 (союзы) = {round(x2, 4)}")
-                form_xs.append(x2)
-    
-                # ПЕРЕМЕННАЯ Х3 - КОЛИЧЕСТВО ЧАСТИЦ
-                count_particle = list_parts.count("ЧАСТ")
-                # Вычисление эталона частиц
-                x3 = round(count_particle / len_text, 4)
-                print(f"Переменная х3 (частицы) = {round(x3, 4)}")
-                form_xs.append(x3)
     
                 # ПЕРЕМЕННАЯ Х4 - КОЛИЧЕСТВО УСИЛИВАЮЩИХ ЗНАКОВ ПРЕПИНАНИЯ
                 count_gain_punct = sub1_reset.count("!") + sub1_reset.count("?")
@@ -147,17 +134,9 @@ class Algorythm():
                 print(f"Переменная х4 = {x4}")
                 form_xs.append(x4)
     
-                # ПЕРЕМЕННАЯ Х5 - КОЛИЧЕСТВО МЕЖДОМЕТИЙ
-                count_interj = list_parts.count("МЕЖД")
-                # Вычисление эталона междометий
-                x5 = round(count_interj / len_text, 4)
-                print(f"Переменная х5 (междометия) = {x5}")
-                form_xs.append(x5)
+                
     
-                max_x, max_x_index = max(form_xs), form_xs.index(max(form_xs)) + 1
-                min_x, min_x_index = min(form_xs), form_xs.index(min(form_xs)) + 1
-                formula = abs(math.sqrt(min_x ** 2 + max_x ** 2))
-                znachenie_list.append(formula)
+                
     
             """
             #print()
@@ -170,16 +149,7 @@ class Algorythm():
             #print()
             #counter += 1
 
-            """
-            print("ВЫЧИСЛЕНИЕ ТОЧЕК МАКСИМУМА И МИНИМУМА ВХОЖДЕНИЯ В САРКАЗМ")
-            print("##########################")
-            print(znachenie_list)
-            max_sarc_list = max(znachenie_list)
-            min_sarc_list = min(znachenie_list)
-            print("Максимальное значение сарказма", "(x" + f"{max_x_index}" + "):", max_sarc_list, )
-            print("Минимальное значение сарказма", "(x" + f"{min_x_index}" + "):", min_sarc_list)
-            print("##########################")
-            """
+
         for sentence in zip(self.split_text, self.neg_list, self.neu_list, self.pos_list):
             df1 = pd.DataFrame(columns=["sentences", "Негативно", "Позитивно", "Нейтрально"])
         df = pd.DataFrame(sentences_ton)
@@ -245,15 +215,61 @@ class Algorythm():
         #fdist.plot(15)
 
         print()
-        print("СЧЁТЧИК ЧАСТИЦ 'НЕ, ВОТ, ЕСЛИ'")
+        print("СЧЁТЧИК ЧАСТИЦ 'НЕ, ВОТ, ЕСЛИ, БЫ, НО'")
         print("#############################")
         print('Количество "Не" в предложенни:', words.count("не"))
         print('Количество "Вот" в предложенни:', words.count("вот"))
         print('Количество "Если" в предложенни:', words.count("если"))
         print('Количество ", eсли" в предложенни:', count_if)
-        print('Количество "Бы" в предложении:', words.count("бы"))
-        print('Количество ", но" в предложении:', words.count(", но"))
+        print('Количество "Бы" в предложении:', count_bi)
+        print('Количество ", но" в предложении:', count_zap_no)
         print("#############################")
         print()
 
+        print("ВЫЧИСЛЕНИЕ ПО ФОРМУЛЕ")
+        form_xs = list()
+
+        # ПЕРЕМЕННАЯ Х1 - КОЛИЧЕСТВО МЕЖДОМЕТИЙ
+
+        # Вычисление эталона междометий
+        x1 = count_interj
+        print(f"Переменная х1 (междометия) = {x1}")
+        form_xs.append(x1)
+
+        # ПЕРЕМЕННАЯ Х2 - КОЛИЧЕСТВО "БЫ"
+        x2 = count_bi
+        form_xs.append(x2)
+
+        # ПЕРЕМЕННАЯ Х3 - КОЛИЧЕСТВО ", ЕСЛИ"
+        x3 = count_if
+        form_xs.append(x3)
+
+        znachenie_list = list()
+
+        max_x, max_x_index = max(form_xs), form_xs.index(max(form_xs)) + 1
+        min_x, min_x_index = min(form_xs), form_xs.index(min(form_xs)) + 1
+        formula = abs(math.sqrt(min_x ** 2 + max_x ** 2))
+        znachenie_list.append(formula)
+
+
+        print("ВЫЧИСЛЕНИЕ ТОЧЕК МАКСИМУМА И МИНИМУМА ВХОЖДЕНИЯ В САРКАЗМ")
+        print("##########################")
+        print(znachenie_list)
+        max_sarc_list = max(znachenie_list)
+        min_sarc_list = min(znachenie_list)
+        print("Максимальное значение сарказма", "(x" + f"{max_x_index}" + "):", max_sarc_list, )
+        print("Минимальное значение сарказма", "(x" + f"{min_x_index}" + "):", min_sarc_list)
+        print("##########################")
+
+
+
+        print("!"*50)
+        print()
+        print()
+        print()
     #print("Count Quotes:", count_q)
+
+
+
+
+
