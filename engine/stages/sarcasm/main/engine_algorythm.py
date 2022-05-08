@@ -45,7 +45,6 @@ class Algorythm():
         znachenie_list = list()
 
     def analyzer(self):
-        count_interj = 0
         text = self.text
         #w2v_model = Word2Vec(min_count=10, window=2, negative=10, alpha=0.03, min_alpha=0.0007, sample=6e-5, sg=1)
         ##w2v_model.build_vocab(dict1)
@@ -61,7 +60,7 @@ class Algorythm():
         sentences_ton = list()
         count_bi = 0
         count_zap_no = 0
-
+        count_interj = 0
         for sentence in self.split_text:
 
             #print(w2v_model.wv.most_similar(positive=[f"{sentence}"]))
@@ -95,15 +94,16 @@ class Algorythm():
             # Анализируем каждое слово в предложении
             for word in sent1:
                 if word != "":
+                    word = re.sub("[,@\'?\.$%_]", "", word)
                     parse_parts = morph.parse(word)[0]
                     part = parse_parts.tag.cyr_repr
                     list_parts.append(part)
-                    #print(f"Для слова '{word}' частью речи является '{part}'")
+                    print(f"Для слова '{word}' частью речи является '{part}'")
 
                     # Сплитим строку из морф анализа
                     morph_split = "".join(part).split(",")
                     #print(morph_split)
-            count_interj = list_parts.count("МЕЖД")
+                count_interj += list_parts.count("МЕЖД")
             #self.count_bi = sentence.count("бы")
            # self.count_zap_no = sentence.count(', но')
 
