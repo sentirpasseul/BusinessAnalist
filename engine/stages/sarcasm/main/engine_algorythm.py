@@ -24,6 +24,8 @@ class Algorythm():
         self.col_bi = "".join(collocations_bi)
         self.col_no = "".join(collocations_no)
         self.text = text
+
+        print("!"*50)
         if text.count("\n") > 1:
             print("Строчек больше 1")
             self.count_sentence = text.count("\n")
@@ -43,6 +45,7 @@ class Algorythm():
         znachenie_list = list()
 
     def analyzer(self):
+        count_interj = 0
         text = self.text
         #w2v_model = Word2Vec(min_count=10, window=2, negative=10, alpha=0.03, min_alpha=0.0007, sample=6e-5, sg=1)
         ##w2v_model.build_vocab(dict1)
@@ -100,8 +103,8 @@ class Algorythm():
                     # Сплитим строку из морф анализа
                     morph_split = "".join(part).split(",")
                     #print(morph_split)
-
-           #self.count_bi = sentence.count("бы")
+            count_interj = list_parts.count("МЕЖД")
+            #self.count_bi = sentence.count("бы")
            # self.count_zap_no = sentence.count(', но')
 
             """
@@ -124,29 +127,6 @@ class Algorythm():
             form_xs = list()
             if len_text != 0:
     
-                # ПЕРЕМЕННАЯ Х1 - КОЛИЧЕСТВО "БЫ"
-                for s in sentence:
-                    if s.isupper():
-                        sum1 += 1
-                count_uppercase = sum1
-                # Вычисление эталона "бы"
-                x1 = count_bi
-                print(f"\nПеременная x1 ('БЫ') = {round(x1, 4)}")
-                form_xs.append(x1)
-    
-                # ПЕРЕМЕННАЯ Х2 - КОЛИЧЕСТВО СОЮЗОВ
-                count_unions = list_parts.count("СОЮЗ")
-                # Вычисление эталона союзов
-                x2 = round(count_unions / len_text, 4)
-                print(f"Переменная х2 (союзы) = {round(x2, 4)}")
-                form_xs.append(x2)
-    
-                # ПЕРЕМЕННАЯ Х3 - КОЛИЧЕСТВО ЧАСТИЦ
-                count_particle = list_parts.count("ЧАСТ")
-                # Вычисление эталона частиц
-                x3 = round(count_particle / len_text, 4)
-                print(f"Переменная х3 (частицы) = {round(x3, 4)}")
-                form_xs.append(x3)
     
                 # ПЕРЕМЕННАЯ Х4 - КОЛИЧЕСТВО УСИЛИВАЮЩИХ ЗНАКОВ ПРЕПИНАНИЯ
                 count_gain_punct = sub1_reset.count("!") + sub1_reset.count("?")
@@ -155,12 +135,7 @@ class Algorythm():
                 print(f"Переменная х4 = {x4}")
                 form_xs.append(x4)
     
-                # ПЕРЕМЕННАЯ Х5 - КОЛИЧЕСТВО МЕЖДОМЕТИЙ
-                count_interj = list_parts.count("МЕЖД")
-                # Вычисление эталона междометий
-                x5 = round(count_interj / len_text, 4)
-                print(f"Переменная х5 (междометия) = {x5}")
-                form_xs.append(x5)
+                
     
                 max_x, max_x_index = max(form_xs), form_xs.index(max(form_xs)) + 1
                 min_x, min_x_index = min(form_xs), form_xs.index(min(form_xs)) + 1
@@ -253,7 +228,7 @@ class Algorythm():
         #fdist.plot(15)
 
         print()
-        print("СЧЁТЧИК ЧАСТИЦ 'НЕ, ВОТ, ЕСЛИ'")
+        print("СЧЁТЧИК ЧАСТИЦ 'НЕ, ВОТ, ЕСЛИ, БЫ, НО'")
         print("#############################")
         print('Количество "Не" в предложенни:', words.count("не"))
         print('Количество "Вот" в предложенни:', words.count("вот"))
@@ -264,5 +239,23 @@ class Algorythm():
         print("#############################")
         print()
 
+        print("ВЫЧИСЛЕНИЕ ПО ФОРМУЛЕ")
 
+        # ПЕРЕМЕННАЯ Х1 - КОЛИЧЕСТВО МЕЖДОМЕТИЙ
+
+        # Вычисление эталона междометий
+        x5 = count_interj
+        print(f"Переменная х5 (междометия) = {x5}")
+
+
+
+        print("!"*50)
+        print()
+        print()
+        print()
     #print("Count Quotes:", count_q)
+
+
+
+
+
