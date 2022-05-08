@@ -17,6 +17,12 @@ split_regex = re.compile(r'[|!|?|…]')
 morph = pymorphy2.MorphAnalyzer()
 nltk.downloader.Downloader('webtext')
 
+def vizual_ton(text_list: list, neg_list: list, pos_list:list, neu_list:list):
+    #positions = np.arange(len())
+    tick_labels = text_list
+
+
+
 def analyzer(text: str):
     split_text = text
     if text.count("\n") >1:
@@ -32,6 +38,7 @@ def analyzer(text: str):
     print(split_text)
 
     neg_list, pos_list, neu_list = tonality(split_text)
+    vis = vizual_ton(split_text, neg_list, pos_list, neu_list)
     counter = 0
 
     znachenie_list = list()
