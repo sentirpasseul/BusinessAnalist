@@ -110,7 +110,7 @@ class Algorythm():
                     # Сплитим строку из морф анализа
                     morph_split = "".join(part).split(",")
                     #print(morph_split)
-                count_interj += list_parts.count("МЕЖД")
+            count_interj += list_parts.count("МЕЖД")
             #self.count_bi = sentence.count("бы")
            # self.count_zap_no = sentence.count(', но')
 
@@ -267,7 +267,6 @@ class Algorythm():
         print("Минимальный х = ", min_x)
         min_x_index = form_xs.index(min(form_xs)) +1
         formula = round(abs(math.sqrt(min_x ** 2 + max_x ** 2))+x4 + x5, 3)
-        print("Значение по формуле: ", formula)
 
 
 
@@ -281,9 +280,6 @@ class Algorythm():
         #print("##########################")
 
         print("!"*50)
-        print()
-        print()
-        print()
 
         return formula
     #print("Count Quotes:", count_q)

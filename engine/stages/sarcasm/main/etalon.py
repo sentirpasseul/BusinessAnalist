@@ -53,24 +53,39 @@ def algorythm():
 
     print("INPUT")
     process_input = Algorythm(text_input).analyzer()
+    print("Значение по формуле: ", process_input)
 
     print("SARCASM")
-    process_sarc = Algorythm(text_sarc).analyzer()
+    process_sarc = Algorythm(text_sarc).analyzer() / 2
+    print("Значение по формуле: ", process_sarc)
 
     print("NOT SARCASM")
-    process_nsarc = Algorythm(text_nsarc).analyzer()
+    process_nsarc = Algorythm(text_nsarc).analyzer() / 2
+    print("Значение по формуле: ", process_nsarc)
 
-    if process_input >= process_sarc:
+    #if process_sarc < process_nsarc and process_input > process_sarc:
+     #   print("Текст саркастичный")
+    print(int(process_nsarc))
+
+    if (int(process_sarc) == int(process_input)):
         print("Текст саркастичный")
-    elif process_nsarc < process_input < process_sarc:
-        print("Текст саркастичный")
-    elif process_nsarc < process_nsarc:
-        if process_sarc <= process_input:
-            print("Текст саркастичный")
-    elif process_input <= process_nsarc:
+    elif (int(process_nsarc) == int(process_input)):
         print("Текст не саркастичный")
-    #elif process_input == process_nsarc == process_sarc:
-     #  print("Текст неоднозначный, значения равны")
+    elif int(process_nsarc) == int(process_input) != int(process_sarc):
+        print("Текст неоднозначный")
+    else:
+
+        if process_input >= process_sarc:
+            print("Текст саркастичный")
+        elif process_nsarc < process_input < process_sarc:
+            print("Текст саркастичный")
+        elif process_nsarc < process_nsarc:
+            if process_sarc <= process_input:
+                print("Текст саркастичный")
+        elif process_input <= process_nsarc:
+            print("Текст не саркастичный")
+        #elif process_input == process_nsarc == process_sarc:
+         #  print("Текст неоднозначный, значения равны")
 
     return process_input
 
