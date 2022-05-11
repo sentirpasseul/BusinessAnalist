@@ -1,28 +1,40 @@
 from tkinter import *
-from tkinter import  ttk
-
-window = Tk()
-window.title("Анализатор ЕЯ-текстов на предмет сарказма")
-window.geometry('800x500')
-
-frm = ttk.Frame(window, padding=10)
-frm.grid()
-
-def button_launch():
-    res = txt.get()
-    return res
-
-ttk.Label(frm, text="Введите текст:", font=("Arial Bold", 12)).grid(column=0,row=0)
-
-txt = Entry(Text(frm, width=60, height=10).grid(column=1, row=0))
-ttk.Button(frm, text="Выйти", command=window.destroy).grid(column=1, row=1)
-ttk.Button(frm, text="Запуск", command=button_launch).grid(column=0, row=1)
-print(txt.get())
+from tkinter import ttk
 
 
-window.mainloop()
+
+class MainUI:
+
+    def __init__(self):
+        self.window = Tk()
+        self.window.title("Анализатор ЕЯ-текстов на предмет сарказма")
+        self.window.geometry('800x500')
+
+        self.frm = ttk.Frame(self.window, padding=10)
+        self.frm.grid()
+
+    def button_launch(self):
+        res = self.txt.get()
+        print(res)
+        return res
+
+    def frame(self):
+
+        ttk.Label(self.frm, text="Введите текст:", font=("Arial Bold", 12)).grid(column=0,row=0)
+
+        self.txt = Entry() #Text(frm, width=60, height=10).grid(column=1, row=0)
+        self.txt.pack()
+        ttk.Button(self.frm, text="Выйти", command=self.window.destroy).grid(column=1, row=1)
+        ttk.Button(self.frm, text="Запуск", command=MainUI.button_launch(self)).grid(column=0, row=1)
 
 
+
+        self.window.mainloop()
+
+
+def main(self):
+    m = MainUI.frame(self)
+    print(m)
 
 
 

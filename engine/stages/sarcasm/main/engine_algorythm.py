@@ -27,15 +27,16 @@ class Algorythm():
 
         print("!"*50)
         if text.count("\n") > 1:
-            print("Строчек больше 1")
+            #print("Строчек больше 1")
             self.count_sentence = text.count("\n")
             self.split_text = text.split("\n")
         else:
-            print("Строчек меньше двух")
-            self.count_sentence = text.count(".")
+            #print("Строчек меньше двух")
+            self.count_sentence = text.count(".")+1
             self.split_text = text.split(".")
         self.neg_list, self.pos_list, self.neu_list = tonality(self.split_text)
         print(self.split_text)
+        print(self.count_sentence)
 
 
     def preprocess(self):
@@ -55,6 +56,7 @@ class Algorythm():
 
         #df = pd.DataFrame(dict)
         #print(df_width)
+        colls = 0
 
         count_if = 0
         sentences_ton = list()
@@ -63,14 +65,19 @@ class Algorythm():
         count_interj = 0
         for sentence in self.split_text:
 
+            colls = 0
             #print(w2v_model.wv.most_similar(positive=[f"{sentence}"]))
             if self.col_if in sentence:
                 count_if +=1
-                print("ЕСТь")
+                #print("ЕСТь")
             if self.col_bi in sentence:
                 count_bi +=1
             if self.col_no in sentence:
                 count_zap_no +=1
+            if "кажется, что" in sentence:
+                colls +=1
+            if "не кажется" in sentence:
+                colls +=1
 
             #print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!")
             #print(sentence)
@@ -139,8 +146,8 @@ class Algorythm():
         df = pd.DataFrame(sentences_ton)
         df_width = df.style.set_properties(subset=['Sentence'], **{'width': '300px'})
 
-        print("ТЕСТИРОВАНИЕ ФУНКЦИИ")
-        print(df)
+       # print("ТЕСТИРОВАНИЕ ФУНКЦИИ")
+        #print(df)
 
         sum_neg = math.fsum(self.neg_list)
         sum_neu = math.fsum(self.neu_list)
@@ -190,12 +197,12 @@ class Algorythm():
             filtered_tokens.append(word)
 
         fdist = FreqDist(filtered_tokens)
-        print()
-        print("ЧАСТОТА СЛОВ")
-        print("########################")
+        #print()
+        #print("ЧАСТОТА СЛОВ")
+        #print("########################")
         #print(*fdist.most_common(len(filtered_tokens)), sep='\n')
-        print("########################")
-        print()
+        #print("########################")
+        #print()
         #fdist.plot(15)
 
         print()
@@ -233,6 +240,20 @@ class Algorythm():
         if x3 != 0:
             form_xs.append(x3)
 
+        x4 = words.count("вот")
+        if x4 != 0:
+            form_xs.append(x4)
+
+        x5 = words.count("не")
+        if x5 != 0:
+            form_xs.append(x5)
+
+        x6 = colls
+        if colls !=0:
+            form_xs.append(x6)
+
+
+
         form_xs.append(round(sum_neg, 3))
         form_xs.append(round(sum_neu,3))
         form_xs.append(round(sum_pos, 3))
@@ -245,7 +266,7 @@ class Algorythm():
         min_x = min(form_xs)
         print("Минимальный х = ", min_x)
         min_x_index = form_xs.index(min(form_xs)) +1
-        formula = abs(math.sqrt(min_x ** 2 + max_x ** 2))
+        formula = round(abs(math.sqrt(min_x ** 2 + max_x ** 2))+x4 + x5, 3)
         print("Значение по формуле: ", formula)
 
 
@@ -263,6 +284,8 @@ class Algorythm():
         print()
         print()
         print()
+
+        return formula
     #print("Count Quotes:", count_q)
 
 
