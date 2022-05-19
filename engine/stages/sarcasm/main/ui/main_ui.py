@@ -11,10 +11,11 @@ class MainUI:
         self.window.geometry('800x500')
 
         self.frm = ttk.Frame(self.window, padding=10)
+        frm = self.frm
         self.frm.grid()
 
     def button_launch(self):
-        res = self.txt.get()
+        res = self.txt
         print(res)
         return res
 
@@ -22,8 +23,9 @@ class MainUI:
 
         ttk.Label(self.frm, text="Введите текст:", font=("Arial Bold", 12)).grid(column=0,row=0)
 
-        self.txt = Entry() #Text(frm, width=60, height=10).grid(column=1, row=0)
-        self.txt.pack()
+        self.txt = Entry()
+        self.txt = self.frm.pack
+
         ttk.Button(self.frm, text="Выйти", command=self.window.destroy).grid(column=1, row=1)
         ttk.Button(self.frm, text="Запуск", command=MainUI.button_launch(self)).grid(column=0, row=1)
 
@@ -32,11 +34,11 @@ class MainUI:
         self.window.mainloop()
 
 
-def main(self):
-    m = MainUI.frame(self)
-    print(m)
+def main():
+    m = MainUI()
+    print(m.frame())
 
-
+main()
 
 """"
 import PySimpleGUI as sg

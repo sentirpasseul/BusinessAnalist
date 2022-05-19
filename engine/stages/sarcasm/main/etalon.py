@@ -3,9 +3,11 @@ from get_text import *
 
 def input_text():
     count_sentence1 = 0
-    text_input = input("Введите свой текст: ")
+    #text_input = input("Введите свой текст: ")
+    text_input = f_wiki_sarc
 
-    if text_input.count("\n") > 1:
+
+    if text_input.count("\n") == text_input.count("."):
         # print("Строчек больше 1")
         count_sentence1 = text_input.count("\n")
 
@@ -17,8 +19,8 @@ def input_text():
     return text_input, count_sentence1
 
 def strings_sarc(count_sentences):
-    txt = f_sarc2
-    split = txt.split("\n")
+    txt = f_wiki_sarc
+    split = txt.split(".")
     l1 = []
     list1 = []
     for s in split:
@@ -29,7 +31,7 @@ def strings_sarc(count_sentences):
     return "".join(l1)
 
 def strings_nsarc(count_sentences):
-    txt = f_witcher
+    txt = f_wiki_sarc
     split = txt.split("\n")
     l1 = []
     list1 = []
@@ -49,22 +51,25 @@ def algorythm():
 
     text_input, count_sentences = input_text()
     text_sarc = strings_sarc(count_sentences)
-    text_nsarc = strings_nsarc(count_sentences)
+    #text_nsarc = strings_nsarc(count_sentences)
 
-    print("INPUT")
-    process_input = Algorythm(text_input).analyzer()
-    print("Значение по формуле: ", process_input)
+    #print("INPUT")
+    #process_input = Algorythm(text_input).analyzer()
+    #print("Значение по формуле: ", process_input)
 
     print("SARCASM")
-    process_sarc = Algorythm(text_sarc).analyzer() / 2
+    process_sarc = Algorythm(text_sarc).analyzer()
     print("Значение по формуле: ", process_sarc)
 
-    print("NOT SARCASM")
-    process_nsarc = Algorythm(text_nsarc).analyzer() / 2
-    print("Значение по формуле: ", process_nsarc)
+    #print("NOT SARCASM")
+    #process_nsarc = Algorythm(text_nsarc).analyzer() / 2
+    #print("Значение по формуле: ", process_nsarc)
 
-    #if process_sarc < process_nsarc and process_input > process_sarc:
-     #   print("Текст саркастичный")
+    #print("Анализ тональности", Algorythm(text_input).analyzer())
+
+    """
+    if process_sarc < process_nsarc and process_input > process_sarc:
+        print("Текст саркастичный")
     print(int(process_nsarc))
 
     if (int(process_sarc) == int(process_input)):
@@ -84,11 +89,11 @@ def algorythm():
                 print("Текст саркастичный")
         elif process_input <= process_nsarc:
             print("Текст не саркастичный")
-        #elif process_input == process_nsarc == process_sarc:
-         #  print("Текст неоднозначный, значения равны")
+        elif process_input == process_nsarc == process_sarc:
+           print("Текст неоднозначный, значения равны")
 
-    return process_input
-
+    #return process_input
+    """
 algorythm()
 
 
