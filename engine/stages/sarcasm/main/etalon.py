@@ -4,7 +4,7 @@ from get_text import *
 def input_text():
     count_sentence1 = 0
     #text_input = input("Введите свой текст: ")
-    text_input = f_wiki_sarc
+    text_input = dataset_sarcasm
 
 
     if text_input.count("\n") == text_input.count("."):
@@ -19,7 +19,7 @@ def input_text():
     return text_input, count_sentence1
 
 def strings_sarc(count_sentences):
-    txt = f_wiki_sarc
+    txt = dataset_sarcasm
     split = txt.split(".")
     l1 = []
     list1 = []
@@ -58,7 +58,10 @@ def algorythm():
     #print("Значение по формуле: ", process_input)
 
     print("SARCASM")
-    process_sarc = Algorythm(text_sarc).analyzer()
+    process_sarc, df_sentences = Algorythm(text_sarc).analyzer()
+
+    df_sentences.to_csv('dataset_sarc.csv')
+
     print("Значение по формуле: ", process_sarc)
 
     #print("NOT SARCASM")

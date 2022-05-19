@@ -202,15 +202,6 @@ class Algorythm():
         print("ДАТА ФРЕЙМ ПО АНАЛИЗУ")
         print(df_sentences)
 
-        #df1 = pd.DataFrame()
-        #for sentence in zip(self.split_text, self.neg_list, self.neu_list, self.pos_list):
-        #    df1 = pd.DataFrame(columns=["sentences", "Негативно", "Позитивно", "Нейтрально"])
-       # df = pd.DataFrame(sentences_ton)
-        #df_width = df.style.set_properties(subset=['Sentence'], **{'width': '300px'})
-       # print(df1)
-
-       # print("ТЕСТИРОВАНИЕ ФУНКЦИИ")
-        #print(df)
 
         sum_neg = math.fsum(self.neg_list)
         sum_neu = math.fsum(self.neu_list)
@@ -347,8 +338,12 @@ class Algorythm():
         sound = AudioSegment.from_file('iphone.wav', format='wav')
         play(sound)
 
-        return formula
-    #print("Count Quotes:", count_q)
+        return formula, df_sentences
+
+
+
+
+
 
 
 

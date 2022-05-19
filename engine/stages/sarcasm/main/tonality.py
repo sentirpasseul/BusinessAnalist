@@ -24,7 +24,6 @@ def tonality(del_sym: list):
     neg_list = list()
     pos_list = list()
 
-    print(del_sym)
     for sentence, sentiment in zip(del_sym, results):
 
         if sentence != string.digits:
