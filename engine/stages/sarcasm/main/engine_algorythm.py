@@ -1,7 +1,4 @@
-import math
 import re
-
-import sklearn.preprocessing
 
 from tonality import tonality
 #from ui.main_ui import input_text
@@ -11,10 +8,7 @@ from nltk.probability import FreqDist
 from collocations import *
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
-import fasttext
 import pymorphy2
-from gensim.models import Word2Vec
 from pydub import AudioSegment
 from pydub.playback import play
 import statistics
@@ -26,33 +20,39 @@ nltk.downloader.Downloader('webtext')
 class Algorythm():
 
     def __init__(self, text):
-        self.col_if = "".join(collocations_if)
-        self.col_bi = "".join(collocations_bi)
-        self.col_no = "".join(collocations_no)
-        self.text = text
+        self.__col_if = "".join(collocations_if)
+        self.__col_bi = "".join(collocations_bi)
+        self.__col_no = "".join(collocations_no)
+        self.__text = text
+
 
         print("!"*50)
-        if text.count("\n") == text.count("\n"):
+        if text.count("\n") == text.count("."):
             #print("Строчек больше 1")
-            self.count_sentence = text.count("\n")
-            self.split_text = text.split("\n")
+            self.__count_sentence = text.count("\n")
+            self.__split_text = text
         else:
             #print("Строчек меньше двух")
-            self.count_sentence = text.count(".")
-            self.split_text = text.split(".")
-        self.neg_list, self.pos_list, self.neu_list = tonality(self.split_text)
+            self.__count_sentence = text.count(".")
+            self.__split_text = text.split(".")
+        self.__neg_list, self.__pos_list, self.__neu_list = tonality(self.__split_text)
         #print(self.split_text)
         #print(self.count_sentence)
 
+    def get_col_if(self):
+        return self.__col_if
+
+
+
 
     def preprocess(self):
-        text = self.text
+        text = self.__text
         # vis = vizual_ton(split_text, neg_list, pos_list, neu_list)
         counter = 0
         znachenie_list = list()
 
     def analyzer(self):
-        text = self.text
+        text = self.__text
         #w2v_model = Word2Vec(min_count=10, window=2, negative=10, alpha=0.03, min_alpha=0.0007, sample=6e-5, sg=1)
         ##w2v_model.build_vocab(dict1)
         #w2v_model.train(dict1, total_examples=w2v_model.corpus_count, epochs=30, report_delay=1)
@@ -67,36 +67,49 @@ class Algorythm():
 
         count_if = 0
         sentences_ton = list()
-        count_bi = 0
-        count_zap_no = 0
-        count_interj = 0
+        count_bi = 0        #количество бы
+        count_zap_no = 0    #количество ", но"
+        count_interj = 0    #количество междометий
+        count_advb = 0      #количество наречий
+        count_adjf = 0      #количество полных прилагательных
+        count_adjs = 0      #количество кратких прилагательных
+
+
+
+
         x_norm = 0
         x_norm_list = list()
         z_norm = 0
         z_norm_list = list()
-
+        """"
         print("ТОНАЛЬНОСТЬ")
         print(self.pos_list)
         print(self.neg_list)
         print(self.neu_list)
 
         print(self.split_text)
-
+        """""
         list_sentenses = []
         count1 = 0
-        for sentence in self.split_text:
+
+        for sentence in self.__split_text:
+
+                if "\n" in sentence:
+                    sentence = re.sub("\n", "", sentence)
 
                 #Счётчик по предложениям
                 #Медиана тональности (смещение)
-                median1 = statistics.median([self.neg_list[count1], self.neu_list[count1], self.pos_list[count1]])
+                median1 = statistics.median([self.__neg_list[count1], self.__neu_list[count1], self.__pos_list[count1]])
 
                 #
-                list_ton = [self.pos_list[count1], self.neu_list[count1], self.neg_list[count1]]
+                list_ton = self.__pos_list[count1], self.__neu_list[count1], self.__neg_list[count1]
 
-                sum1 = sum(list_ton)
-                z_norm = (sum1 - statistics.mean(list_ton)) / median1
-                z_norm_list.append(z_norm)
+                sum1 = statistics.mean(list_ton)
+                z_norm = (sum1 - min(list_ton)) / max(list_ton) - min(list_ton)
+                z_norm_list.append(abs(z_norm))
                 count1 +=1
+
+
 
                 reg_sent = re.sub("[\d+]", "", sentence)
                 list_sentenses.append(reg_sent)
@@ -104,14 +117,15 @@ class Algorythm():
 
 
 
+
                 colls = 0
                 #print(w2v_model.wv.most_similar(positive=[f"{sentence}"]))
-                if self.col_if in sentence:
+                if self.__col_if in sentence:
                     count_if +=1
                     #print("ЕСТь")
-                if self.col_bi in sentence:
+                if self.__col_bi in sentence:
                     count_bi +=1
-                if self.col_no in sentence:
+                if self.__col_no in sentence:
                     count_zap_no +=1
                 if "кажется, что" in sentence:
                     colls +=1
@@ -149,7 +163,13 @@ class Algorythm():
                         # Сплитим строку из морф анализа
                         morph_split = "".join(part).split(",")
                         #print(morph_split)
+
+
+
                 count_interj += list_parts.count("МЕЖД")
+                count_advb += list_parts.count("НАР")
+                count_adjf += list_parts.count("ПРИЛ")
+                count_adjs += list_parts.count("КР_ПРИЛ")
                 #self.count_bi = sentence.count("бы")
                # self.count_zap_no = sentence.count(', но')
 
@@ -179,13 +199,16 @@ class Algorythm():
                 #print()
                 #counter += 1
 
+
+
+
         for i in list_sentenses:
             if i == "":
                 list_sentenses.remove(i)
 
         print(list_sentenses)
-        data_sentences = {"Предложения": list_sentenses, "Негативно": self.neg_list, "Позитивно": self.pos_list,
-                          "Нейтрально": self.neu_list, "Z-нормализация": z_norm_list}
+        data_sentences = {"Предложения": list_sentenses, "Негативно": self.__neg_list, "Позитивно": self.__pos_list,
+                          "Нейтрально": self.__neu_list, "Z-нормализация": z_norm_list}
 
 
 
@@ -202,7 +225,7 @@ class Algorythm():
         print("ДАТА ФРЕЙМ ПО АНАЛИЗУ")
         print(df_sentences)
 
-
+        """
         sum_neg = math.fsum(self.neg_list)
         sum_neu = math.fsum(self.neu_list)
         sum_pos = math.fsum(self.pos_list)
@@ -224,11 +247,11 @@ class Algorythm():
         print("Отрицательно:", sum_neg)
         print("Положительно:", sum_neu)
         print("Нейтрально:", sum_pos)
-
+        """
 
 
         print("СЧЁТЧИК ВСЕХ ПРЕДЛОЖЕНИЙ В ТЕКСТЕ")
-        print(self.count_sentence)
+        print(self.__count_sentence)
 
             # Часто встречающиеся слова
 
@@ -242,7 +265,7 @@ class Algorythm():
             #for token in sentence:
                 #if token not in ru_stopwords:
                 #    filtered_tokens.append(token)
-        words = " ".join(self.split_text).split(" ")
+        words = " ".join(self.__split_text).split(" ")
         count_q = words.count('"')
         if count_q > 0:
             count_q = True
@@ -259,6 +282,8 @@ class Algorythm():
         #print()
         #fdist.plot(15)
 
+
+
         print()
         print("СЧЁТЧИК ЧАСТИЦ 'НЕ, ВОТ, ЕСЛИ, БЫ, НО'")
         print("#############################")
@@ -271,74 +296,56 @@ class Algorythm():
         print("#############################")
         print()
 
-        print("ВЫЧИСЛЕНИЕ ПО ФОРМУЛЕ")
-        form_xs = list()
 
-        # ПЕРЕМЕННАЯ Х1 - КОЛИЧЕСТВО МЕЖДОМЕТИЙ
+        print("Вычисление Х1 - лексемы")
+        x1 = sum([words.count("не"), words.count("вот"),
+                  words.count("если"), count_if, count_bi,
+                  count_zap_no])
+        print(x1)
 
-        # Вычисление эталона междометий
-        x1 = count_interj
-        print(f"Переменная х1 (междометия) = {x1}")
-        if x1!= 0:
-            form_xs.append(x1)
+        print("Вычисление Х2 - части речи")
+        x2 = sum([count_interj, count_adjf, count_advb, count_adjs])
+        print(x2)
 
-        # ПЕРЕМЕННАЯ Х2 - КОЛИЧЕСТВО "БЫ"
-        x2 = count_bi
-        print(f'Переменная х2 (количество бы) = {x2}')
-        if x2 != 0:
-           form_xs.append(x2)
+        x_all = x1, x2
+        x_sum = sum([x1, x2])
 
-        # ПЕРЕМЕННАЯ Х3 - КОЛИЧЕСТВО ", ЕСЛИ"
-        x3 = count_if
-        print(f'Переменная х3 (количество , если) = {x3}')
-        if x3 != 0:
-            form_xs.append(x3)
+        x_mean = statistics.mean(x_all)
+        try:
+            statAn = (x_sum - min(x_all)) / max(x_all) - min(x_all)
+        except ZeroDivisionError:
+            statAn = 0
+        stat_z = sum(z_norm_list)
+        #print("STAT_Z", stat_z)
+        all_params = [statAn, stat_z]
+        params_mean = statistics.mean(all_params)
 
-        x4 = words.count("вот")
-        if x4 != 0:
-            form_xs.append(x4)
+        print("STAT_Z", stat_z)
+        print("params_mean", params_mean)
+        print("np.std(all_params)", np.std(all_params))
 
-        x5 = words.count("не")
-        if x5 != 0:
-            form_xs.append(x5)
-
-        x6 = colls
-        if colls !=0:
-            form_xs.append(x6)
-
-
-
-        form_xs.append(round(sum_neg, 3))
-        form_xs.append(round(sum_neu,3))
-        form_xs.append(round(sum_pos, 3))
-
-        znachenie_list = list()
-        print(form_xs)
-        max_x = max(form_xs)
-        print("Максимальный х = ", max_x)
-        max_x_index = form_xs.index(max(form_xs)) +1
-        min_x = min(form_xs)
-        print("Минимальный х = ", min_x)
-        min_x_index = form_xs.index(min(form_xs)) +1
-        formula = round(abs(math.sqrt(min_x ** 2 + max_x ** 2))+x4 + x5, 3)
+        try:
+            formula = abs(stat_z - params_mean / np.std(all_params))
+            #if formula < 0:
+            #formula = (stat_z - min(all_params)) / max(all_params) - min(all_params)
+        except ZeroDivisionError:
+            formula = 0
 
 
 
-        #print("ВЫЧИСЛЕНИЕ ТОЧЕК МАКСИМУМА И МИНИМУМА ВХОЖДЕНИЯ В САРКАЗМ")
-        #print("##########################")
-        #print(znachenie_list)
-        #max_sarc_list = max(znachenie_list)
-        #min_sarc_list = min(znachenie_list)
-        #print("Максимальное значение сарказма", "(x" + f"{max_x_index}" + "):", max_sarc_list, )
-        #print("Минимальное значение сарказма", "(x" + f"{min_x_index}" + "):", min_sarc_list)
-        #print("##########################")
 
         print("!"*50)
 
-        sound = AudioSegment.from_file('iphone.wav', format='wav')
-        play(sound)
+        #model_words = corpora.Dictionary(filtered_tokens)
+        #print(model_words)
 
-        return formula, df_sentences
+        try:
+            sound = AudioSegment.from_file('iphone.wav', format='wav')
+            play(sound)
+        except RuntimeWarning:
+            print("")
+        return statAn, df_sentences, formula
+
 
 
 
