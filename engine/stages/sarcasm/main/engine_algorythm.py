@@ -26,7 +26,7 @@ class Algorythm():
         self.__text = text
 
 
-        print("!"*50)
+        #print("!"*50)
         if text.count("\n") == text.count("."):
             #print("Строчек больше 1")
             self.__count_sentence = text.count("\n")
@@ -206,7 +206,7 @@ class Algorythm():
             if i == "":
                 list_sentenses.remove(i)
 
-        print(list_sentenses)
+        #print(list_sentenses)
         data_sentences = {"Предложения": list_sentenses, "Негативно": self.__neg_list, "Позитивно": self.__pos_list,
                           "Нейтрально": self.__neu_list, "Z-нормализация": z_norm_list}
 
@@ -222,8 +222,9 @@ class Algorythm():
         pd.set_option('display.max_columns', 500)
         pd.set_option('display.max_colwidth',250)
         print()
-        print("ДАТА ФРЕЙМ ПО АНАЛИЗУ")
+        print("ДАТА ФРЕЙМ")
         print(df_sentences)
+        print()
 
         """
         sum_neg = math.fsum(self.neg_list)
@@ -250,8 +251,8 @@ class Algorythm():
         """
 
 
-        print("СЧЁТЧИК ВСЕХ ПРЕДЛОЖЕНИЙ В ТЕКСТЕ")
-        print(self.__count_sentence)
+        #print("СЧЁТЧИК ВСЕХ ПРЕДЛОЖЕНИЙ В ТЕКСТЕ")
+        #print(self.__count_sentence)
 
             # Часто встречающиеся слова
 
@@ -283,7 +284,7 @@ class Algorythm():
         #fdist.plot(15)
 
 
-
+        """
         print()
         print("СЧЁТЧИК ЧАСТИЦ 'НЕ, ВОТ, ЕСЛИ, БЫ, НО'")
         print("#############################")
@@ -295,17 +296,15 @@ class Algorythm():
         print('Количество ", но" в предложении:', count_zap_no)
         print("#############################")
         print()
+        """
 
-
-        print("Вычисление Х1 - лексемы")
         x1 = sum([words.count("не"), words.count("вот"),
                   words.count("если"), count_if, count_bi,
-                  count_zap_no])
-        print(x1)
+                  count_zap_no, words.count("что")])
+        print('Х1 - количество лексем ("но", "вот", "если", "бы", "что"):', x1)
 
-        print("Вычисление Х2 - части речи")
         x2 = sum([count_interj, count_adjf, count_advb, count_adjs])
-        print(x2)
+        print("Х2 - количество междометий:",x2)
 
         x_all = x1, x2
         x_sum = sum([x1, x2])
@@ -320,12 +319,14 @@ class Algorythm():
         all_params = [statAn, stat_z]
         params_mean = statistics.mean(all_params)
 
-        print("STAT_Z", stat_z)
-        print("params_mean", params_mean)
-        print("np.std(all_params)", np.std(all_params))
+        print("Статистический анализ текста:", stat_z)
+        #цprint('Агрегированное значени дистанции каждого слова:', )
+        #print("params_mean", params_mean)
+        #print("np.std(all_params)", np.std(all_params))
 
         try:
             formula = abs(stat_z - params_mean / np.std(all_params))
+            print("Вычисление значения всех весовых коэффициентов:", formula)
             #if formula < 0:
             #formula = (stat_z - min(all_params)) / max(all_params) - min(all_params)
         except ZeroDivisionError:
@@ -334,7 +335,7 @@ class Algorythm():
 
 
 
-        print("!"*50)
+        #print("!"*50)
 
         #model_words = corpora.Dictionary(filtered_tokens)
         #print(model_words)

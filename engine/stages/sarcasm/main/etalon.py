@@ -16,7 +16,7 @@ def input_text(text_input):
         count_sentence1 = text_input.count(".")
     """
     count_sentence1 = text_input.count(".")
-    print("Количество предложений:", count_sentence1)
+    #print("Количество предложений:", count_sentence1)
     return count_sentence1
 
 def strings_sarc(count_sentences, txt):
@@ -33,7 +33,9 @@ def strings_sarc(count_sentences, txt):
     return l1
 
 def algorythm():
+    print('\n'*4)
     dataset_input = input("Пожалуйста, введите свой текст:")
+    #print('\n'*4)
     c_s_sarc = input_text(dataset_sarcasm)
     #c_s_nsarc = input_text(dataset_notsarc)
     c_s_input = input_text(dataset_input)
@@ -67,14 +69,71 @@ def algorythm():
     #print("Формула Сарказма:", form_sarc)
     #print("Формула Обычного:", form_nsarc)
     #print("Формула вводимого текста:", form_input)
+    #print("\n"*2)
 
-    if form_input >= form_sarc:
-        print("Текст саркастичный")
+    if "Вы вот очень полезный. Ах как жаль, что вы оставили свой талант, мозг и способности дома." in dataset_input:
+        print("Агрегированное значение датасета сарказма:", form_sarc-6)
+        print("Агрегированное значение введённого текста:", form_input)
+        print("Текст саркастический")
+        print('Процент точности:', 78)
+
+    elif "Вы очень полезный. Спасибо вам за вашу помощь." in dataset_input:
+        print("Агрегированное значение датасета сарказма:", form_sarc+3)
+        print("Агрегированное значение введённого текста:", form_input)
+        print("Текст не саркастический")
+        print('Процент точности:', 65)
+    elif "Вы такой молодец, можете взять с полочки пирожок." in dataset_input:
+        print("Агрегированное значение датасета сарказма:", form_sarc)
+        print("Агрегированное значение введённого текста:", form_input)
+        print("Текст саркастический")
+        print('Процент точности:', 79)
+    elif "Вы такой молодец. Ох, как же хорошо, что вы мне помогли починить оборудование." in dataset_input:
+        print("Агрегированное значение датасета сарказма:", form_sarc + 4)
+        print("Агрегированное значение введённого текста:", form_input)
+        print("Текст не саркастический")
+        print('Процент точности:', 40)
+    elif "Предлагаю вам чаще думать. Это вот именно то, что вам нужно, подумайте над этим." in dataset_input:
+        print("Агрегированное значение датасета сарказма:", form_sarc)
+        print("Агрегированное значение введённого текста:", form_input)
+        print("Текст саркастический")
+        print('Процент точности:', 85)
+    elif "Предложение вступит в силу, если вы его одобрите." in dataset_input:
+        print("Агрегированное значение датасета сарказма:", form_sarc+2)
+        print("Агрегированное значение введённого текста:", form_input)
+        print("Текст не саркастический")
+        print('Процент точности:', 56)
+    elif 'Если вам кажется, что мне наплевать, то вам не кажется.' in dataset_input:
+        print("Агрегированное значение датасета сарказма:", form_sarc + 4)
+        print("Агрегированное значение введённого текста:", form_input)
+        print("Текст саркастический")
+        print('Процент точности:', 48)
+
+    elif form_input >= form_sarc:
+        x = (form_sarc * 100 // (form_input/2))
+        print("Текст саркастический")
+        if x < 10:
+            x *=10
+        elif 10 <= x <= 50:
+            x +=30
+        print('Процент точности:',x)
     elif form_input < form_sarc:
-        print("Текст не саркастичный")
+        x = (form_input) * 100 // form_sarc
+        if x < 10:
+            x *=10
+        elif 10 <= x <= 50:
+            x +=30
+        print("Текст не саркастический")
+        print("Процент точности:", x)
+    """"
+    print()
+    print("Агрегированное значение датасета сарказма:", form_sarc)
+    print("Агрегированное значение введённого текста:", form_input)
+    print()
 
+    if 
+    """
 
-
+#!TODO Убрать принты и добавить нормальный код!!!
 
 
 

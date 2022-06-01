@@ -32,15 +32,9 @@ def tonality(del_sym: list):
             neu = sentiment.get('neutral')
             p = sentiment.get('positive')
             neg = sentiment.get('negative')
-
-
-
-
-
             neu_list.append(neu)
             pos_list.append(p)
             neg_list.append(neg)
-
 
     for s in range(len(neg_list)):
         if neg_list[s] is None:

@@ -1,3 +1,4 @@
+
 file_s = open('main_data.txt', 'r', encoding='utf-8')
 dataset_sarcasm = file_s.read()
 
