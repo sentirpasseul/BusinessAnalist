@@ -12,6 +12,7 @@ import pymorphy2
 from pydub import AudioSegment
 from pydub.playback import play
 import statistics
+import math
 
 split_regex = re.compile(r'[|!|?|…]')
 morph = pymorphy2.MorphAnalyzer()
@@ -81,14 +82,14 @@ class Algorythm():
         x_norm_list = list()
         z_norm = 0
         z_norm_list = list()
-        """"
-        print("ТОНАЛЬНОСТЬ")
-        print(self.pos_list)
-        print(self.neg_list)
-        print(self.neu_list)
 
-        print(self.split_text)
-        """""
+        #print("ТОНАЛЬНОСТЬ")
+        #print(self.__pos_list)
+        #print(self.__neg_list)
+        #print(self.__neu_list)
+
+        #print(self.__split_text)
+
         list_sentenses = []
         count1 = 0
 
@@ -226,29 +227,31 @@ class Algorythm():
         print(df_sentences)
         print()
 
-        """
-        sum_neg = math.fsum(self.neg_list)
-        sum_neu = math.fsum(self.neu_list)
-        sum_pos = math.fsum(self.pos_list)
 
+        sum_neg = math.fsum(self.__neg_list)
+        sum_neu = math.fsum(self.__neu_list)
+        sum_pos = math.fsum(self.__pos_list)
+
+        """
         if sum_pos != 0 or sum_neu != 0 or sum_neg != 0:
-            diff_neg = sum_neg / self.count_sentence
-            diff_neu = sum_neu / self.count_sentence
-            diff_pos = sum_pos / self.count_sentence
+            diff_neg = sum_neg / self.__count_sentence
+            diff_neu = sum_neu / self.__count_sentence
+            diff_pos = sum_pos / self.__count_sentence
 
             print()
             print("Вычисление меры негатива на одно предложение:", diff_neg)
             print("Вычисление меры позитива на одно предложение:", diff_pos)
             print("Вычисление меры нейтральности на одно предложение:", diff_neu)
             print()
-
+        """
         print()
         print("#########################")
         print("ОБЩАЯ ОЦЕНКА ТОНАЛЬНОСТИ ТЕКСТА")
         print("Отрицательно:", sum_neg)
         print("Положительно:", sum_neu)
         print("Нейтрально:", sum_pos)
-        """
+        print()
+
 
 
         #print("СЧЁТЧИК ВСЕХ ПРЕДЛОЖЕНИЙ В ТЕКСТЕ")
@@ -284,9 +287,9 @@ class Algorythm():
         #fdist.plot(15)
 
 
-        """
+
         print()
-        print("СЧЁТЧИК ЧАСТИЦ 'НЕ, ВОТ, ЕСЛИ, БЫ, НО'")
+        #print("СЧЁТЧИК ЧАСТИЦ 'НЕ, ВОТ, ЕСЛИ, БЫ, НО'")
         print("#############################")
         print('Количество "Не" в предложенни:', words.count("не"))
         print('Количество "Вот" в предложенни:', words.count("вот"))
@@ -296,7 +299,7 @@ class Algorythm():
         print('Количество ", но" в предложении:', count_zap_no)
         print("#############################")
         print()
-        """
+
 
         x1 = sum([words.count("не"), words.count("вот"),
                   words.count("если"), count_if, count_bi,
