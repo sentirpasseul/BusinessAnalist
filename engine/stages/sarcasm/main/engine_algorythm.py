@@ -83,12 +83,6 @@ class Algorythm():
         z_norm = 0
         z_norm_list = list()
 
-        #print("ТОНАЛЬНОСТЬ")
-        #print(self.__pos_list)
-        #print(self.__neg_list)
-        #print(self.__neu_list)
-
-        #print(self.__split_text)
 
         list_sentenses = []
         count1 = 0
@@ -133,9 +127,9 @@ class Algorythm():
                 if "не кажется" in sentence:
                     colls +=1
 
-                #print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!")
-                #print(sentence)
-                #print("!!!!!!!!!!!!!!!!!!!!!!!", end="")
+                print("\n\n!!!!!!!!!!!!!!!!!!!!!!!!")
+                print(sentence)
+                print("!!!!!!!!!!!!!!!!!!!!!!!", end="")
 
                 # Сплитим предложение на слова
                 sent1 = sentence.split(" ")
@@ -159,11 +153,11 @@ class Algorythm():
                         parse_parts = morph.parse(word)[0]
                         part = parse_parts.tag.cyr_repr
                         list_parts.append(part)
-                        #print(f"Для слова '{word}' частью речи является '{part}'")
+                        print(f"Для слова '{word}' частью речи является '{part}'")
 
                         # Сплитим строку из морф анализа
                         morph_split = "".join(part).split(",")
-                        #print(morph_split)
+                        print(morph_split)
 
 
 
@@ -171,34 +165,34 @@ class Algorythm():
                 count_advb += list_parts.count("НАР")
                 count_adjf += list_parts.count("ПРИЛ")
                 count_adjs += list_parts.count("КР_ПРИЛ")
-                #self.count_bi = sentence.count("бы")
-               # self.count_zap_no = sentence.count(', но')
+                self.count_bi = sentence.count("бы")
+                self.count_zap_no = sentence.count(', но')
 
 
                 neg_sent, pos_sent, neu_sent = tonality(sentence)
 
-                #sum_neg_sent = math.fsum(neg_sent)
-                #sum_pos_sent = math.fsum(pos_sent)
-                #sum_neu_sent = math.fsum(neu_sent)
+                sum_neg_sent = math.fsum(neg_sent)
+                sum_pos_sent = math.fsum(pos_sent)
+                sum_neu_sent = math.fsum(neu_sent)
 
-                #print()
-                #print("Отрицательно:", sum_neg_sent)
-                #print("Положительно:", sum_pos_sent)
-                #print("Нейтрально:", sum_neu_sent)
-                #print()
+                print()
+                print("Отрицательно:", sum_neg_sent)
+                print("Положительно:", sum_pos_sent)
+                print("Нейтрально:", sum_neu_sent)
+                print()
 
-                #print("Количество БЫ:", count_bi)
-                #print("Количество ', но'", count_zap_no)
+                print("Количество БЫ:", count_bi)
+                print("Количество ', но'", count_zap_no)
 
-                #print()
-                #print("АНАЛИЗ ТОНАЛЬНОСТИ ПРЕДЛОЖЕНИЯ:")
-                #print("###############################")
-                #print("Отрицательно:", neg_list[counter])
-                #print("Положительно:", pos_list[counter])
-                #print("Нейтрально:", neu_list[counter])
-                #print("################################")
-                #print()
-                #counter += 1
+                print()
+                print("АНАЛИЗ ТОНАЛЬНОСТИ ПРЕДЛОЖЕНИЯ:")
+                print("###############################")
+                print("Отрицательно:", self.__neg_list[count1])
+                print("Положительно:", self.__pos_list[count1])
+                print("Нейтрально:", self.__neu_list[count1])
+                print("################################")
+                print()
+                count1 += 1
 
 
 
@@ -232,7 +226,7 @@ class Algorythm():
         sum_neu = math.fsum(self.__neu_list)
         sum_pos = math.fsum(self.__pos_list)
 
-        """
+
         if sum_pos != 0 or sum_neu != 0 or sum_neg != 0:
             diff_neg = sum_neg / self.__count_sentence
             diff_neu = sum_neu / self.__count_sentence
@@ -243,7 +237,7 @@ class Algorythm():
             print("Вычисление меры позитива на одно предложение:", diff_pos)
             print("Вычисление меры нейтральности на одно предложение:", diff_neu)
             print()
-        """
+
         print()
         print("#########################")
         print("ОБЩАЯ ОЦЕНКА ТОНАЛЬНОСТИ ТЕКСТА")
@@ -278,13 +272,13 @@ class Algorythm():
             filtered_tokens.append(word)
 
         fdist = FreqDist(filtered_tokens)
-        #print()
-        #print("ЧАСТОТА СЛОВ")
-        #print("########################")
-        #print(*fdist.most_common(len(filtered_tokens)), sep='\n')
-        #print("########################")
-        #print()
-        #fdist.plot(15)
+        print()
+        print("ЧАСТОТА СЛОВ")
+        print("########################")
+        print(*fdist.most_common(len(filtered_tokens)), sep='\n')
+        print("########################")
+        print()
+        fdist.plot(15)
 
 
 
